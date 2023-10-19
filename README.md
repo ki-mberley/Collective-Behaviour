@@ -1,4 +1,4 @@
-# Collective-Behaviour
+# Collective-Behaviour - Shepherding 
 ## Group members
 [Franz Muszarsky](https://github.com/Franz0808)\
 [Franziska Weber](https://github.com/franziskaweber)\
