@@ -23,6 +23,7 @@ The file `params.txt` sets the parameters for the simulation and is designed suc
 First of all, switch to the correct subdirectory and install the dependencies:
 
 	cd ../plotting
+ 	mkdir plots
 	pip install -r requirements.txt
 	sudo apt install -y ffmpeg
 
