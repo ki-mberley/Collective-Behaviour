@@ -1,6 +1,6 @@
 # ToDo until 19.11.2023:
 - [ ] Adapt the report such that it fits the IMRAD structure better
-- [ ] Identify the essential files of the model implementation and move them to this repo
+- [x] Identify the essential files of the model implementation and move them to this repo
 - [ ] Clean up the code
 - [ ] Update the README of this GH repo
 
