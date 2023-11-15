@@ -1,7 +1,7 @@
 # ToDo until 19.11.2023:
-- [ ] Adapt the report such that it fits the IMRAD structure better
+- [ ] Adapt the report such that it fits the IMRAD structure better (as discussed on telegram)
 - [x] Identify the essential files of the model implementation and move them to this repo
-- [ ] Clean up the code
+- [ ] Clean up the code and add better comments
 - [ ] Update the README of this GH repo
 
 # Collective-Behaviour - Shepherding 
