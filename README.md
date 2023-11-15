@@ -1,3 +1,8 @@
+# ToDo until 19.11.2023:
+- [ ] Adapt the report such that it fits the IMRAD structure better
+- [ ] Identify the essential files of the model implementation and move them to this repo
+- [ ] update this GH repo
+
 # Collective-Behaviour - Shepherding 
 ## Group members
 [Franz Muszarsky](https://github.com/Franz0808)\
