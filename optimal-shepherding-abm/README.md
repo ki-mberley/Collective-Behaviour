@@ -1,12 +1,12 @@
 # Optimal Shepherding - Agent-Based Model
 
-This code is strongly based on the [implementation of an ABM](https://github.com/arphysics/optimal-shepherding/tree/main/ABM_code) by Aditya Ranganathan which was written to explore the herding phenomenon via agent-based simulations. Results corresponding to this original implementation are described in the paper [Optimal shepherding and transport of a flock](https://www.semanticscholar.org/paper/Optimal-shepherding-and-transport-of-a-flock-Ranganathan-Heyde/f8f559f5ee1a5a9337130325dc3930d49a9b77c0) by Alexander Heyde, Aditya Ranganathan, Anupam Gupta, and Lakshminarayanan Mahadevan.
+This code is a reduced and corrected version of the [implementation of the ABM](https://github.com/arphysics/optimal-shepherding/tree/main/ABM_code) by Aditya Ranganathan which was written to explore the herding phenomenon via agent-based simulations. Results corresponding to this original implementation are described in the paper [Optimal shepherding and transport of a flock](https://www.semanticscholar.org/paper/Optimal-shepherding-and-transport-of-a-flock-Ranganathan-Heyde/f8f559f5ee1a5a9337130325dc3930d49a9b77c0) by Alexander Heyde, Aditya Ranganathan, Anupam Gupta, and Lakshminarayanan Mahadevan.
 
-## How to run the code
+## Running the Code
 
-The code to run the simulation is written in C++ using an object-oriented approach and can be found in the subdirectory `simulation`. Plotting is done using python and the corresponding code is contained in the subdirectory `plotting`.
+The code to run the simulation is written in C++ using an object-oriented approach and can be found in the subdirectory `simulation`. Plotting is done using python and the corresponding code is contained in the subdirectory `plotting`. This repository already contains the files that you will get by following the steps below as examples.
  
-### How to run the simulation
+### Running the Simulation
 
 To run the simulation, carry out the following steps:
 
@@ -18,7 +18,7 @@ The `make`-command compiles the file `simulate.cpp`. Running the simulation with
 
 The file `params.txt` sets the parameters for the simulation and is designed such that editing the file does not require a new `make`-command before running a new simulation.
 
-### How to generate plots and videos
+### Generating Plots and Videos
 
 First of all, switch to the correct subdirectory and install the dependencies:
 

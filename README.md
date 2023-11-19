@@ -1,21 +1,23 @@
-# ToDo 19.11.2023:
-- [ ] Try to use the template --> does not work --> should update it
-- [ ] Adapt the report such that it fits the IMRAD structure better (as discussed on telegram)
-- [ ] Push source files and pdf of report to this repo
-- [ ] Clean up the code and add better comments
-- [ ] Update the README of this GH repo: include milestones and description of model
+# Collective-Behaviour - Optimal Shepherding 
 
-# Collective-Behaviour - Shepherding 
-## Group members
+*Shepherding behaviors* are a class of flocking behaviors in which one or more agents (called *shepherds*) try to control the motion of another group of agents (called *flock*) by exerting repulsive forces. A real-life example are sheep dogs guiding flocks of sheep. *Herding* denotes a special type of shepherding behavior in which the shepherds attempt to steer the flock from a starting point to a target.   
+
+In the context of the course *Collective Behavior*, we decided to investigate the problem of finding optimal herding strategies. To begin our work, we have chosen the paper titled *Optimal Shepherding and Transport of a Flock* by A. Ranganathan, A. Heyde, A. Gupta, and L. Mahadevan as a starting point. This paper models herding as an optimization problem for the shepherd using an agent-based approach.
+
+For the first report we have successfully run the [existing implementation](https://github.com/arphysics/optimal-shepherding/tree/main/ABM_code) of the agent-based model (ABM) and used it to visualize the simulation with a plot and a video. We have also identified the parts of the implementation that are relevant for our project and pushed them to this GitHub repository. While doing so, we corrected the encountered errors and organized the code files in subfolders to make the structure of the implementation easier to understand. 
+
+## Structure of this Repository
+
+- `optimal-shepherding-abm` contains our reduced and corrected version of the existing ABM implementation. More details can be found in the `README` of this subdirectory.
+- `references` contains the references that we have consulted for conducting our first report.
+- `report` contains the source code and the prebuilt PDF of our first report.
+
+## Next Steps
+
+- For the [second report](https://github.com/ki-mberley/Collective-Behaviour/milestone/2) (due by December 18, 2023) we plan to extend the ABM implementation such that it supports multiple shepherds.
+- For the [final report](https://github.com/ki-mberley/Collective-Behaviour/milestone/3) (due by January 08, 2024) we plan to investigate which optimal herding strategies emerge in case of multiple shepherds.
+
+## Group Members
 [Franz Muszarsky](https://github.com/Franz0808)\
 [Franziska Weber](https://github.com/franziskaweber)\
 [Kimberley Frings](https://github.com/ki-mberley)
-
-## What we plan to do
-We aim to address the well-recognized issue of shepherding behavior. Our initial focus involves the reconstruction of an Agent-Based Model (ABM) approach. The existing ABM script is presently implemented in C++. Our initial challenge is to replicate this ABM model in Python (Report Deadline 1). Upon the successful recreation of the current ABM model, we will transition to an experimental phase designed to identify opportunities for further enhancements. The most promising improvements will provide valuable insights for optimizing the model or potentially developing an alternative model that may yield superior performance (Reporting Deadline 2). During the ultimate reporting deadline, we will assimilate feedback and refine our approach to ensure a polished outcome.
-
-## Initial starting point: 
-https://www.researchgate.net/publication/365209333_Optimal_shepherding_and_transport_of_a_flock
-DOI:10.48550/arXiv.2211.04352
-
-
