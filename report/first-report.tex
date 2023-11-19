@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{graphicx}
+% \usepackage{parskip}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{url}
+
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+
+\title{Collective Behaviour - Optimal Shepherding}
+\subtitle{First Report}
+\author{Franziska\\Weber \and Franz\\Muszarsky \and Kimberley\\Frings}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+\input{introduction}
+
+\section{Methods}
+\label{sec:methods}
+\input{methods}
+
+\section{Results}
+\label{sec:results}
+\input{results}
+
+\section{Discussion}
+\label{sec:discussion}
+\input{discussion}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
