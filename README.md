@@ -1,5 +1,5 @@
 # ToDo 19.11.2023:
-- [ ] Try to use the template
+- [ ] Try to use the template --> does not work --> should update it
 - [ ] Adapt the report such that it fits the IMRAD structure better (as discussed on telegram)
 - [ ] Push source files and pdf of report to this repo
 - [ ] Clean up the code and add better comments
