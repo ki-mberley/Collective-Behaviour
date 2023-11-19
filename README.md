@@ -3,7 +3,7 @@
 - [ ] Adapt the report such that it fits the IMRAD structure better (as discussed on telegram)
 - [ ] Push source files and pdf of report to this repo
 - [ ] Clean up the code and add better comments
-- [ ] Update the README of this GH repo
+- [ ] Update the README of this GH repo: include milestones and description of model
 
 # Collective-Behaviour - Shepherding 
 ## Group members
