@@ -32,4 +32,4 @@
 10 #max_ld*X_distance_sheep_to_dogs_for_interaction
 0 #fence_(0_for_off)
 10 #how_often_to_dump_data
-2 #how_often_to_plot_data
+10 #how_often_to_plot_data
