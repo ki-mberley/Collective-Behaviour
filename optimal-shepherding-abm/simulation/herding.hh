@@ -23,7 +23,7 @@ class herding {
 		double dog_direction(int); //sets direction of the dog to herd CM
 		void dog_repulsor(double [], double, int); //propogates according to dog-repulsion
 		double sheep_attractor(int); //propogates according to CM attraction
-		void fence_repulsor(double [], int, double); //for case of active fence, triggers fence repulsion
+		void fence_repulsor(int); // For case of active fence, triggers fence repulsion
 		void sheep_repulsor(int); //calculates soft-shell repulsion for sheep
 
 		//timestepping
@@ -60,6 +60,7 @@ class herding {
 	    // //Additional temporary arrays / variables
 	    double pos_avg[2] = {}; //temporary array to store the average position of the sheep herd for that timestep
 	    double ssrf[2] = {}; //array to store sheep-sheep repulsion force
+        double sfrf[2] = {}; // Array to store sheep-fence repulsion force
 	    double cost_function_val[4] = {}; //array to store the cost function values and parameters
 	    double dog_sample_angle; //make this array
 
@@ -95,6 +96,14 @@ class herding {
 	    int timesteps, num_agents, num_dogs, L, sample_number, mod_dump_data;
 
 	   	double seed = 1231.12;
+        double fence_locations[20][2] = {
+                {1, 1},
+                {1, 2},
+                {1, 3},
+                {1, 4},
+                {1, 5},
+        }; // TODO: hardcoded fence
+        int num_fence_posts;
 
 	   	//double seed = srand(omp_get_wtime())1231.12; --> random seed is now being implemented in simulate.cc
 
@@ -108,3 +117,4 @@ class herding {
 
 
 #endif
+

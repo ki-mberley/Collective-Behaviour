@@ -65,9 +65,6 @@ void herding::dog_repulsor(double sd_rf [], double angle, int j){
 
   double B = 1; //arbitrary coefficient for the dog repulsion;
 
-
-  //cout << "Value of xd2 in the dog_repulsor function: " << xd2 << endl;
-
   //currently we have hardcoded in 1 dog
   double dx = x[j]-xd2;
   double dy = y[j]-yd2;
@@ -81,7 +78,6 @@ void herding::dog_repulsor(double sd_rf [], double angle, int j){
 
   sd_rf[0] = f*cos(theta_dr);
   sd_rf[1] = f*sin(theta_dr);
-
 }
 
 
@@ -89,7 +85,6 @@ void herding::dog_repulsor(double sd_rf [], double angle, int j){
 double herding::sheep_attractor(int j){
 
   //param j: identifier of particle in question
-
 
   double x_cm = pos_avg[0];
   double y_cm = pos_avg[1];
@@ -135,33 +130,36 @@ void herding::sheep_repulsor(int j){
 
 
 //Calculates the repulsion between sheep and fence
-void herding::fence_repulsor(double sf_rf[], int j, double r){
-  /*param sf_rf: array containing x,y repulsion vector from the fence to the sheep
-  param j: timestep (seems unnecessary)
-  param r: also seems unnecessary*/
+void herding::fence_repulsor(int j) {
+    double A = 1;       // Coefficient of repulsion
+    double fx = 0;      // x component of the force
+    double fy = 0;      // y component of the force
+    double dx;          // x distance between two particles
+    double dy;          // y distance between two particles
+    double rid_abs;     // Total distance between two particles
+    double theta_dr;    // Sets the direction of the force
 
+    for (int k = 0; k < num_fence_posts; k++) {
+        dx = x[j] - fence_locations[k][0];
+        dy = y[j] - fence_locations[k][1];
+        rid_abs = sqrt(dx * dx + dy * dy);
 
-  //THIS FUNCTION NEEDS REVIEW--IT IS CURRENTLY NOT BEING USED IN THE CODE.
+        if (rid_abs < 10 * ls) {
+            theta_dr = atan2(dy,dx);
+            fx += A * exp(-rid_abs / ls) * cos(theta_dr);
+            fy += A * exp(-rid_abs / ls) * sin(theta_dr);
+        }
+    }
 
-  double B = 20; //arbitrary coefficient for the dog repulsion;
-
-  //currently we have hadcoded in 1 dog
-  double dx = (x[j]-x_target);
-  double dy = (y[j]-(y_target+0.5*ld));
-
-  sf_rf[0] = 0;
-  sf_rf[1] = 0;
-
-  if(y[j]<y_target-0.5*ld){
-    sf_rf[0] = dx/abs(dx)*B*exp(-abs(dx)/(r));
-  }
-  sf_rf[1] = dy/abs(dy)*B*exp(-abs(dy)/(r));
-
+    sfrf[0] = A * fx; // sfrf[0] is the x-component of the array containing the repulsion vector from the fence to sheep j
+    sfrf[1] = A * fy; // sfrf[1] is the y-component of the array containing the repulsion vector from the fence to sheep j
 }
 
 
 
 #endif
+
+
 
 
 

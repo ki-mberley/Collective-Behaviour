@@ -18,8 +18,16 @@ L = 10 #size of domain to plot
 t0 = time.time()
 
 #import data files
-dat_field = np.loadtxt('../simulation/data.txt') #x,y position data for herd and dogs
-parameters = np.loadtxt('../simulation/params.txt') #info from parameter file (change function when params changes)
+dat_field = np.loadtxt('data.txt') #x,y position data for herd and dogs
+parameters = np.loadtxt('params.txt') #info from parameter file (change function when params changes)
+
+fence_locations = [
+    [1, 1],
+    [1, 2],
+    [1, 3],
+    [1, 4],
+    [1, 5],
+] # TODO: hardcoded fence
 
 #load info from parameter file
 driving_on, x_target, y_target, vs, vd, ls, ld, fence, num_particles, ndogs, modder = load_params(parameters)
@@ -70,9 +78,9 @@ def colored_line(x, y, lab, z=None, linewidth=1, MAP='jet'):
         ys[i+1] = np.array([y[i+1], y[i+1] + unit_perp[1] ]).flatten()
 
         if len(z) == i+1:
-            z.append(z[-1] + (dx**2+dy**2)**0.5)     
-        # set z values
-        zs[i] = np.array([z[i], z[i] ]).flatten()
+            z.append(z[-1] + (dx**2+dy**2)**0.5)
+        #set z values
+        zs[i] = np.array([z[i], z[i] ] ).flatten()
         zs[i+1] = np.array([z[i+1], z[i+1] ]).flatten()
         
     return xs, ys, zs
@@ -94,6 +102,7 @@ fig, ax = plt.subplots(figsize = (15,10))
 ax.pcolormesh(xs, ys, zs, shading='gouraud', cmap='Blues', label = 'Sheep')
 ax.pcolormesh(xd, yd, zd, shading='gouraud', cmap='Greys', label = 'Dogs')
 ax.scatter(x_target, y_target, c = 'Orange', marker = 'D', s = 50, label = 'target')
+ax.plot([1, 1], [1, 5]) # TODO: hardcoded fence
 alpha = 1
 c_index = 0 #variable to select a color as a function of time
 
@@ -127,4 +136,6 @@ plt.ylabel('y motion')
 plt.xlim(-L,L)
 plt.ylim(-L,L)
 #plt.show()
-plt.savefig('plots/output_plot.pdf')
+plt.savefig('output_plot.pdf')
+
+

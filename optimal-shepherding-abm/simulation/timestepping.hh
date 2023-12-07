@@ -15,16 +15,11 @@ using namespace std;
 
 //run vicsek, cm attraction, hard repulsion force, and wall repulsion
 void herding::sheep_step_no_dog(){
-
-    double sf_rf[2]; //array to store results of sheep-fence repulsion force
-
     //calculate herd CM
     avg_loc(x, y);
 
-
     for(int i = 0; i<num_agents; i++){
 
-        
         //Viscek interaction
         double theta_vsk = viscek(i); //alignment angle calculated from Vicsek
         double v_vsk[2] = {v*cos(theta_vsk), v*sin(theta_vsk)}; //take step according to Vicsek alignment angle
@@ -52,11 +47,11 @@ void herding::sheep_step_no_dog(){
         ynext += gamma*v_cm[1]*dt*temp_delta; //CM attraction in the y direction
 
 
-        //wall repulsion
-        if(fence == 1){
-            fence_repulsor(sf_rf, i, r); //calculate effects of a fence
-            xnext += sf_rf[0]*dt; //fence effects in x direction
-            ynext += sf_rf[1]*dt; //fence effects in y direction
+        // Fence repulsion
+        if (fence == 1) {
+            fence_repulsor(i);      // Calculate effects of a fence
+            xnext += sfrf[0] * dt; // Fence effects in x direction
+            ynext += sfrf[1] * dt; // Fence effects in y direction
         }
 
         x2[i] = xnext + x[i]; //take step
@@ -300,3 +295,4 @@ void herding::final_round(int time)
 
 
 #endif
+
