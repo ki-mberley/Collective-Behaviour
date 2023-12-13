@@ -31,6 +31,10 @@
 0 #driving_on?
 10 #max_ld*X_distance_sheep_to_dogs_for_interaction
 1 #fence_(0_for_off)
+-100 #fmin_x
+100 #fmax_x
+-100 #fmin_y
+100 #fmax_y
 20 #how_often_to_dump_data
 25 #how_often_to_plot_data
 

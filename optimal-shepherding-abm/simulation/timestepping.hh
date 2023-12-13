@@ -15,8 +15,6 @@ using namespace std;
 
 // Run vicsek, cm attraction, hard repulsion force, and wall repulsion
 void herding::sheep_step_no_dog() {
-    double sf_rf[2];
-
     // Calculate herd CM
     avg_loc(x, y);
 
@@ -47,15 +45,21 @@ void herding::sheep_step_no_dog() {
         xnext += gamma * v_cm[0] * dt * temp_delta; // CM attraction in the x direction
         ynext += gamma * v_cm[1] * dt * temp_delta; // CM attraction in the y direction
 
-        // Fence repulsion
-        if (fence == 1) {
-            fence_repulsor(sf_rf, i);   // Calculate effects of a fence
-            xnext += sf_rf[0] * dt; // Fence effects in x direction
-            ynext += sf_rf[1] * dt; // Fence effects in y direction
-        }
-
         x2[i] = xnext + x[i]; // Take step
         y2[i] = ynext + y[i]; // Take step
+
+        // Fence repulsion
+        if (fence == 1) {
+            if (x2[i] > fmax_x) {
+                x2[i] = fmax_x;
+            } else if (y2[i] > fmax_y) {
+                y2[i] = fmax_y;
+            } else if (x2[i] < fmin_x) {
+                x2[i] = fmin_x;
+            } else if(y2[i] > fmin_y) {
+                y2[i] = fmin_y;
+            }
+        }
 
         xnext = 0; // Reset step size
         ynext = 0; // Reset step size
@@ -129,10 +133,6 @@ void herding::test_propogate_sheep()
 
 
 void herding::first_round() {
-    // Variables to implement reflective boundary conditions
-    double dx = 0;
-    double dy = 0;
-
     // Set array to store results of cost function
     double min_cost = exp(100); //initial high value of cost function  
     double max_cost = 0; //initial high value of cost function
@@ -158,12 +158,17 @@ void herding::first_round() {
             xd2 = xd + v_dog_tmp*cos(dog_sample_angle)*dt;
             yd2 = yd + v_dog_tmp*sin(dog_sample_angle)*dt;
 
-            // Dog reflective boundary conditions if a fence exists
+            // Fence repulsion
             if (fence == 1) {
-                dx = xd2 - x_target;
-                dy = yd2 - (y_target + 0.5 * ld);
-                if (dx < 0) xd2 = x_target - dx;
-                if (dy > 0) yd2 = y_target - dy;
+                if (xd2 > fmax_x) {
+                    xd2 = fmax_x;
+                } else if (yd2 > fmax_y) {
+                    yd2 = fmax_y;
+                } else if (xd2 < fmin_x) {
+                    xd2 = fmin_x;
+                } else if(yd2 > fmin_y) {
+                    yd2 = fmin_y;
+                }
             }
 
             // Hardcoded maximum distance between dog and sheep

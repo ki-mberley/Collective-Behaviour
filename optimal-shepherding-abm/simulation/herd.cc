@@ -114,8 +114,6 @@ void herding::init_arrs_and_vars(){
 
     xcm_final = 0; 
     ycm_final = 0;
-
-    num_fence_posts = 5; // TODO: hardcoded fence
 }
 
 

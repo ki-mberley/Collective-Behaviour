@@ -126,33 +126,6 @@ void herding::sheep_repulsor(int j) {
 }
 
 
-//Calculates the repulsion between sheep and fence
-void herding::fence_repulsor(double sf_rf [], int j) {
-    double A = 1;       // Coefficient of repulsion
-    double fx = 0;      // x component of the force
-    double fy = 0;      // y component of the force
-    double dx;          // x distance between two particles
-    double dy;          // y distance between two particles
-    double rid_abs;     // Total distance between two particles
-    double theta_dr;    // Sets the direction of the force
-
-    for (int k = 0; k < num_fence_posts; k++) {
-        dx = x[j] - fence_locations[k][0];
-        dy = y[j] - fence_locations[k][1];
-        rid_abs = sqrt(dx * dx + dy * dy);
-
-        if (rid_abs < 10 * ls) {
-            theta_dr = atan2(dy,dx);
-            fx += A * exp(-rid_abs / ls) * cos(theta_dr);
-            fy += A * exp(-rid_abs / ls) * sin(theta_dr);
-        }
-    }
-
-    sf_rf[0] = A * fx; // sf_rf[0] is the x-component of the array containing the repulsion vector from the fence to sheep j
-    sf_rf[1] = A * fy; // sf_rf[1] is the y-component of the array containing the repulsion vector from the fence to sheep j
-}
-
-
 #endif
 
 

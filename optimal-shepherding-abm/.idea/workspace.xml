@@ -10,8 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1db7d93b-ef8a-443c-9eef-97614a0021ca" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation/forces.hh" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/forces.hh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulation/herd.cc" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/herd.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulation/herd.o" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/herd.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation/herding.hh" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/herding.hh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulation/params.txt" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/params.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulation/simulate" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/simulate" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation/timestepping.hh" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/timestepping.hh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
