@@ -23,7 +23,7 @@ class herding {
 		double dog_direction(int); //sets direction of the dog to herd CM
 		void dog_repulsor(double [], double, int); //propogates according to dog-repulsion
 		double sheep_attractor(int); //propogates according to CM attraction
-		void fence_repulsor(int); // For case of active fence, triggers fence repulsion
+		void fence_repulsor(double [], int); // For case of active fence, triggers fence repulsion
 		void sheep_repulsor(int); //calculates soft-shell repulsion for sheep
 
 		//timestepping

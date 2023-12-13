@@ -94,6 +94,7 @@ double herding::sheep_attractor(int j) {
     return theta_lr;
 }
 
+
 // Calculates the force due to hard-shell sheep-sheep interaction
 void herding::sheep_repulsor(int j) {
     //Param j: identifier of particle in question
@@ -125,9 +126,8 @@ void herding::sheep_repulsor(int j) {
 }
 
 
-
 //Calculates the repulsion between sheep and fence
-void herding::fence_repulsor(int j) {
+void herding::fence_repulsor(double sf_rf [], int j) {
     double A = 1;       // Coefficient of repulsion
     double fx = 0;      // x component of the force
     double fy = 0;      // y component of the force
@@ -148,10 +148,9 @@ void herding::fence_repulsor(int j) {
         }
     }
 
-    sfrf[0] = A * fx; // sfrf[0] is the x-component of the array containing the repulsion vector from the fence to sheep j
-    sfrf[1] = A * fy; // sfrf[1] is the y-component of the array containing the repulsion vector from the fence to sheep j
+    sf_rf[0] = A * fx; // sf_rf[0] is the x-component of the array containing the repulsion vector from the fence to sheep j
+    sf_rf[1] = A * fy; // sf_rf[1] is the y-component of the array containing the repulsion vector from the fence to sheep j
 }
-
 
 
 #endif
