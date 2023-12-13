@@ -11,10 +11,10 @@
   <component name="ChangeListManager">
     <list default="true" id="1db7d93b-ef8a-443c-9eef-97614a0021ca" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulation/forces.hh" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/forces.hh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulation/herd.cc" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/herd.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/plots/output_movie.mp4" beforeDir="false" afterPath="$PROJECT_DIR$/plotting/plots/output_movie.mp4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/plots/output_plot.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/plotting/plots/output_plot.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plotting/trajectory_plotter.py" beforeDir="false" afterPath="$PROJECT_DIR$/plotting/trajectory_plotter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation/herd.o" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/herd.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simulation/herding.hh" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/herding.hh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation/params.txt" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/params.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation/simulate" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/simulate" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simulation/timestepping.hh" beforeDir="false" afterPath="$PROJECT_DIR$/simulation/timestepping.hh" afterDir="false" />
@@ -70,6 +70,7 @@
       <workItem from="1702305470179" duration="624000" />
       <workItem from="1702307817800" duration="881000" />
       <workItem from="1702452539617" duration="3510000" />
+      <workItem from="1702499849318" duration="2257000" />
     </task>
     <servers />
   </component>

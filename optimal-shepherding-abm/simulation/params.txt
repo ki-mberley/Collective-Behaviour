@@ -37,4 +37,3 @@
 100 #fmax_y
 20 #how_often_to_dump_data
 25 #how_often_to_plot_data
-

@@ -158,19 +158,6 @@ void herding::first_round() {
             xd2 = xd + v_dog_tmp*cos(dog_sample_angle)*dt;
             yd2 = yd + v_dog_tmp*sin(dog_sample_angle)*dt;
 
-            // Fence repulsion
-            if (fence == 1) {
-                if (xd2 > fmax_x) {
-                    xd2 = fmax_x;
-                } else if (yd2 > fmax_y) {
-                    yd2 = fmax_y;
-                } else if (xd2 < fmin_x) {
-                    xd2 = fmin_x;
-                } else if(yd2 > fmin_y) {
-                    yd2 = fmin_y;
-                }
-            }
-
             // Hardcoded maximum distance between dog and sheep
             if (sqrt((xd2 - pos_avg[0]) * (xd2 - pos_avg[0]) + (yd2 - pos_avg[1]) * (yd2 - pos_avg[1])) < 5 * dog_dist_factor * ld) { // Begin dog_dist_factor if
                 // Loop over agents for dog movement
@@ -209,8 +196,22 @@ void herding::first_round() {
             }
 
         }
+
         xdogsf[id] = xd_f;
         ydogsf[id] = yd_f;
+
+        // Fence repulsion
+        if (fence == 1) {
+            if (xdogs[id] > fmax_x) {
+                xdogs[id] = fmax_x;
+            } else if (ydogs[id] > fmax_y) {
+                ydogs[id] = fmax_y;
+            } else if (xdogs[id] < fmin_x) {
+                xdogs[id] = fmin_x;
+            } else if(ydogs[id] > fmin_y) {
+                ydogs[id] = fmin_y;
+            }
+        }
     }
 }
     
