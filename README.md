@@ -10,7 +10,7 @@ For the first report we have successfully run the [existing implementation](http
 
 - `optimal-shepherding-abm` contains our reduced and corrected version of the existing ABM implementation. More details can be found in the `README` of this subdirectory.
 - `references` contains the references that we have consulted for conducting our first report.
-- `report` contains the source code and the prebuilt PDF of our first report.
+- `reports` contains the source codes and the prebuilt PDFs of our first and second reports.
 
 ## Next Steps
 
