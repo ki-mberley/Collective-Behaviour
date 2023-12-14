@@ -56,7 +56,7 @@ void herding::sheep_step_no_dog() {
                 y2[i] = fmax_y;
             } else if (x2[i] < fmin_x) {
                 x2[i] = fmin_x;
-            } else if(y2[i] > fmin_y) {
+            } else if(y2[i] < fmin_y) {
                 y2[i] = fmin_y;
             }
         }
@@ -202,14 +202,14 @@ void herding::first_round() {
 
         // Fence repulsion
         if (fence == 1) {
-            if (xdogs[id] > fmax_x) {
-                xdogs[id] = fmax_x;
-            } else if (ydogs[id] > fmax_y) {
-                ydogs[id] = fmax_y;
-            } else if (xdogs[id] < fmin_x) {
-                xdogs[id] = fmin_x;
-            } else if(ydogs[id] > fmin_y) {
-                ydogs[id] = fmin_y;
+            if (xdogsf[id] > fmax_x) {
+                xdogsf[id] = fmax_x;
+            } else if (ydogsf[id] > fmax_y) {
+                ydogsf[id] = fmax_y;
+            } else if (xdogsf[id] < fmin_x) {
+                xdogsf[id] = fmin_x;
+            } else if(ydogsf[id] < fmin_y) {
+                ydogsf[id] = fmin_y;
             }
         }
     }

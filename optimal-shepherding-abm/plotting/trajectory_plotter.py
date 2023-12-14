@@ -22,7 +22,7 @@ dat_field = np.loadtxt('../simulation/data.txt') #x,y position data for herd and
 parameters = np.loadtxt('../simulation/params.txt') #info from parameter file (change function when params changes)
 
 #load info from parameter file
-driving_on, x_target, y_target, vs, vd, ls, ld, fence, num_particles, ndogs, modder = load_params(parameters)
+driving_on, x_target, y_target, vs, vd, ls, ld, fence, fmin_x, fmax_x, fmin_y, fmax_y, num_particles, ndogs, modder = load_params(parameters)
 
 #load info from data file
 xpart, ypart, thetapart, x_dogs, y_dogs, dat_times, timesteps, times, = load_data(dat_field, num_particles)
@@ -86,14 +86,17 @@ ydogs = y_dogs[::num_particles][:-1]
 
 
 #store variables
-xs, ys, zs = colored_line(xmeans, ymeans, 0, linewidth = .5);
-xd, yd, zd = colored_line(xdogs, ydogs, 1, linewidth = .2)
+xs, ys, zs = colored_line(xmeans, ymeans, 0, linewidth = .3)
+xd, yd, zd = colored_line(xdogs, ydogs, 1, linewidth = .05)
 
 # make the plots
 fig, ax = plt.subplots(figsize = (15,10))
 ax.pcolormesh(xs, ys, zs, shading='gouraud', cmap='Blues', label = 'Sheep')
 ax.pcolormesh(xd, yd, zd, shading='gouraud', cmap='Greys', label = 'Dogs')
 ax.scatter(x_target, y_target, c = 'Orange', marker = 'D', s = 50, label = 'target')
+ax.hlines([fmin_y, fmax_y], fmin_x, fmax_x)
+ax.vlines([fmin_x, fmax_x], fmin_y, fmax_y)
+
 alpha = 1
 c_index = 0 #variable to select a color as a function of time
 
@@ -105,12 +108,12 @@ for i in range(int(maxtime)):
     index = num_particles*i
     tmp_x = xpart[index: index+num_particles]
     tmp_y = ypart[index: index+num_particles]
-    if i%int(maxtime/3) == 0:
-        if c_index ==0: 
+    if i % int(maxtime / 3) == 0:
+        if c_index == 0:
             color = 'Purple'
-        if c_index ==1:
+        if c_index == 1:
             color = 'Cyan'
-        if c_index ==2:
+        if c_index == 2:
             color = 'Red'
         ax.scatter(tmp_x,tmp_y, c = color, s = 2, label = 'sheep at time '+ str(i))
         ax.scatter(x_dogs[index],y_dogs[index], c = color, s = 100, marker = '^', label = 'dog at time '+ str(i) )

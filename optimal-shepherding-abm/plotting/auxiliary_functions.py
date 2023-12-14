@@ -115,9 +115,13 @@ def load_params(parameters):
   This should be resolved in the source code and then needs to be (for now) manually changed in the load_params function.
   '''
   fence = parameters[32] #whether there is a fence or not
+  fmin_x = parameters[33]
+  fmax_x = parameters[34]
+  fmin_y = parameters[35]
+  fmax_y = parameters[36]
   modder = int(parameters[-1]) #how often to plot
 
-  return driving_on, x_target, y_target, vs, vd, ls, ld, fence, num_particles, ndogs, modder
+  return driving_on, x_target, y_target, vs, vd, ls, ld, fence, fmin_x, fmax_x, fmin_y, fmax_y, num_particles, ndogs, modder
 
 
 def load_costdata(costdata):

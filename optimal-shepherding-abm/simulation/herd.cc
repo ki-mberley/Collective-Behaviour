@@ -58,14 +58,16 @@ void herding::read_params(){
     myfile >>a >> b; driving_on = a;
     myfile >>a >> b; dog_dist_factor = a;
     myfile >>a >> b; fence = a;
+    myfile >>a >> b; fmin_x = a;
+    myfile >>a >> b; fmax_x = a;
+    myfile >>a >> b; fmin_y = a;
+    myfile >>a >> b; fmax_y = a;
     myfile >>a >> b; mod_dump_data = a;
 }
 
 
-void herding::print_data_to_file(FILE* fparticles, int jj){
-
+void herding::print_data_to_file(FILE* fparticles, int jj) {
     //Dumps sheep and dog position and orientations to a data file
-
     for(int i = 0; i <num_agents; i++){
         fprintf(fparticles, "%d %d %f %f %f", jj, i, x[i], y[i], theta[i]);
         for(int id = 0; id <num_dogs; id++) fprintf(fparticles, " %f %f",xdogsf[id], ydogsf[id]);
@@ -118,32 +120,15 @@ void herding::init_arrs_and_vars(){
 
 
 //initialize dog positions
-void herding::initialize_dogs(){ 
-
+void herding::initialize_dogs(){
     //Initializes the position and orientation of the dog at time t = 0
-
-    for(int i = 0; i<num_dogs; i++){
-
-        if(fence == 0){
-            xdogs[i] = xd_start;
-            ydogs[i] = yd_start;
-        }
-
-
-        else{
-            //hardcoded example
-            double tmp_theta = M_PI*(rand_float()-1)/4;
-            double tmp_dist = (rand_float()+3)/2;
-            xdogs[i] = ld*dog_dist_factor*1/3*cos(tmp_theta)*tmp_dist;
-            ydogs[i] = ld*dog_dist_factor*1/3*sin(tmp_theta)*tmp_dist;
-        }
-
+    for (int i = 0; i < num_dogs; i++) {
+        xdogs[i] = xd_start;
+        ydogs[i] = yd_start;
     }
 
-        xdogsf = xdogs;
-        ydogsf = ydogs;
-
-
+    xdogsf = xdogs;
+    ydogsf = ydogs;
 }
 
 //initialize sheep positions
@@ -201,41 +186,20 @@ int herding::break_when_close(){
 
 //finds the average location of sheep at each timestep
 void herding::avg_loc(double x_array[], double y_array[]){
-  /*param x: array containing x position of all the sheep
-  param y: array containing y position of all the sheep
-  param num_agents: number of agents*/
+    /*param x: array containing x position of all the sheep
+    param y: array containing y position of all the sheep
+    param num_agents: number of agents*/
 
-  double tmp_x = 0;
-  double tmp_y = 0;
+    double tmp_x = 0;
+    double tmp_y = 0;
 
-
-  if(fence == 0){
-    //find the average location of x & y
-    for(int i =0; i <num_agents; i++){
+    // Find the average location of x & y
+    for (int i = 0; i < num_agents; i++) {
       tmp_x += x_array[i];
       tmp_y += y_array[i];
     }
 
-
-  pos_avg[0] = tmp_x/num_agents; //set pointer array to average x location
-  pos_avg[1] = tmp_y/num_agents; //set pointer array to average y location
-  }
-  
-  else{
-    double counter = 0;
-    for(int k = 0; k<num_agents; k++){
-        if(x[k] > x_target){
-          if(y[k] < y_target){
-            tmp_x += x_array[k];
-            tmp_y += y_array[k];
-            counter +=1;
-          }
-        }
-    }
-
-  pos_avg[0] = tmp_x/counter; //set pointer array to average x location
-  pos_avg[1] = tmp_y/counter; //set pointer array to average y location
-  }
-
+    pos_avg[0] = tmp_x / num_agents; //set pointer array to average x location
+    pos_avg[1] = tmp_y / num_agents; //set pointer array to average y location
 }
 
