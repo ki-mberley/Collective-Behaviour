@@ -12,11 +12,9 @@ using namespace std;
 
 
 void herding::read_params(){
-
     /* 
     Function reads in the parameter file. 
     Unfortunately this function IS SENSITIVE TO ORDER so be VERY CAREFUL when editing or adding to the param file
-
     */
     
     double a;
@@ -67,49 +65,41 @@ void herding::read_params(){
 
 
 void herding::print_data_to_file(FILE* fparticles, int jj) {
-    //Dumps sheep and dog position and orientations to a data file
-    for(int i = 0; i <num_agents; i++){
+    // Dumps sheep and dog position and orientations to a data file
+    for (int i = 0; i < num_agents; i++) {
         fprintf(fparticles, "%d %d %f %f %f", jj, i, x[i], y[i], theta[i]);
-        for(int id = 0; id <num_dogs; id++) fprintf(fparticles, " %f %f",xdogsf[id], ydogsf[id]);
+        for(int id = 0; id < num_dogs; id++) fprintf(fparticles, " %f %f",xdogsf[id], ydogsf[id]);
         fprintf(fparticles, "\n");
     }
-
 }
 
 
-void herding::init_arrs_and_vars(){
-
-    //initializes arrays and variables
+void herding::init_arrs_and_vars() {
+    // Initializes arrays and variables
     
-    //sheep
-    x = new double[num_agents]; //temporary array to store x positions of sheep for a single timestep
-    y = new double[num_agents]; //temporary array to store y positions of sheepfor a single timestep
-    theta = new double[num_agents]; //temporary array to store angles for a single timestep
+    // Sheep
+    x = new double[num_agents];         // Temporary array to store x positions of sheep for a single timestep
+    y = new double[num_agents];         // Temporary array to store y positions of sheepfor a single timestep
+    theta = new double[num_agents];     // Temporary array to store angles for a single timestep
 
-    x2 = new double[num_agents]; //temporary array to store x positions for next  timestep
-    y2 = new double[num_agents]; //temporary array to store y positions for next timestep
-    theta2 = new double[num_agents]; //temporary array to store angles for next timestep
+    x2 = new double[num_agents];        // Temporary array to store x positions for next  timestep
+    y2 = new double[num_agents];        // Temporary array to store y positions for next timestep
+    theta2 = new double[num_agents];    // Temporary array to store angles for next timestep
 
-    x_test = new double[num_agents]; //temporary array to store sampling positions for next  timestep
-    y_test = new double[num_agents]; //temporary array to store sampling positions for next timestep
+    x_test = new double[num_agents];    // Temporary array to store sampling positions for next  timestep
+    y_test = new double[num_agents];    // Temporary array to store sampling positions for next timestep
 
+    // Dog(s)
+    xdogs = new double[num_dogs];       // Array to store x positions of dogs
+    ydogs = new double[num_dogs];       // Array to store y positions of dogs
+    xdogsf = new double[num_dogs];      // Temporary array to store x positions of dogs
+    ydogsf = new double[num_dogs];      // Temporary array to store y positions of dogs
 
-    //dog(s)
-    xdogs = new double[num_dogs]; //array to store x positions of dogs
-    ydogs = new double[num_dogs]; //array to store y positions of dogs
-    xdogsf = new double[num_dogs]; //temporary array to store x positions of dogs
-    ydogsf = new double[num_dogs]; //temporary array to store y positions of dogs
-
-
-    //initialize other variables
-
-    // //Additional temp arrays / variables
-
+    // Additional temp arrays / variables
     //THIS SECTION NEEDS TO BE CLEANED UP (as of 02/08/2021)
-
     sheep_spread2 = 0;
     sheep_spread_final = 0;
-    dist_weight_2 = dist_weight; //alpha value to play with
+    dist_weight_2 = dist_weight; // Alpha value to play with
     v_dog_tmp = v_dog;
     max_spread = max_spread_X*ls;
     min_spread = min_spread_X*ls; 
@@ -119,9 +109,9 @@ void herding::init_arrs_and_vars(){
 }
 
 
-//initialize dog positions
-void herding::initialize_dogs(){
-    //Initializes the position and orientation of the dog at time t = 0
+// Initialize dog positions
+void herding::initialize_dogs() {
+    // Initializes the position and orientation of the dog at time t = 0
     for (int i = 0; i < num_dogs; i++) {
         xdogs[i] = xd_start;
         ydogs[i] = yd_start;
@@ -131,61 +121,51 @@ void herding::initialize_dogs(){
     ydogsf = ydogs;
 }
 
-//initialize sheep positions
-void herding::initialize_sheep(FILE* fparticles){
 
-    //initializes positions and orientations of the sheep
-    
-
-    for(int i=0; i<num_agents;i++){
-        x[i] = bound*rand_float();
-        y[i] = bound*rand_float();
-        theta[i] = 2*M_PI*rand_float();
+// Initialize sheep positions
+void herding::initialize_sheep(FILE* fparticles) {
+    // Initializes positions and orientations of the sheep
+    for (int i=0; i < num_agents; i++) {
+        x[i] = bound * rand_float();
+        y[i] = bound * rand_float();
+        theta[i] = 2 * M_PI * rand_float();
     }
 
 }
 
-//function to generate random value -1 to 1
-double herding::rand_float(){
-        return (double) 2*rand()/(double) RAND_MAX-1; 
+
+// Function to generate random value -1 to 1
+double herding::rand_float() {
+    return (double) 2 * rand() / (double) RAND_MAX - 1;
 }
 
-
-void herding::print_cost_to_file(FILE* fcost, int jj){
-
-    //dumps some of the cost function data to a file
-
+\
+// Dumps some of the cost function data to a file
+void herding::print_cost_to_file(FILE* fcost, int jj) {
     fprintf(fcost, "%d %f %f %f %f %f %f %f \n", jj, dist_weight_2, v_dog_tmp, sheep_spread_final, 
     xcm_final, ycm_final ,xdogsf[0], ydogsf[0]);
 }
 
 
-void herding::print_params(){
-
+void herding::print_params() {
     cout << "Nsheep: " << num_agents << endl;
     cout << "Ndogs: " << num_dogs << endl;
     cout << "v_dog: " << v_dog << endl;
     cout << "gamma: " << gamma << endl;
 }
 
-
-int herding::break_when_close(){
-
-        //break if herd CM is very close to target 
-
-        if((xcm_final-x_target)*(xcm_final-x_target)+(ycm_final-y_target)*(ycm_final-y_target)<(num_agents*ls)*(1)){
-            
-            printf("Close enough!!\n");
-
-            return 1;
-        }
-
-        else return 0; 
+// Break if herd CM is very close to target
+int herding::break_when_close() {
+    if ((xcm_final - x_target) * (xcm_final - x_target) + (ycm_final - y_target) * (ycm_final - y_target) < (num_agents * ls) * (1)) {
+        printf("Close enough!!\n");
+        return 1;
+    }
+    else return 0;
 }
 
 
-//finds the average location of sheep at each timestep
-void herding::avg_loc(double x_array[], double y_array[]){
+// Finds the average location of sheep at each timestep
+void herding::avg_loc(double x_array[], double y_array[]) {
     /*param x: array containing x position of all the sheep
     param y: array containing y position of all the sheep
     param num_agents: number of agents*/

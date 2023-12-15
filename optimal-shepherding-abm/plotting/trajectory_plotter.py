@@ -94,8 +94,9 @@ fig, ax = plt.subplots(figsize = (15,10))
 ax.pcolormesh(xs, ys, zs, shading='gouraud', cmap='Blues', label = 'Sheep')
 ax.pcolormesh(xd, yd, zd, shading='gouraud', cmap='Greys', label = 'Dogs')
 ax.scatter(x_target, y_target, c = 'Orange', marker = 'D', s = 50, label = 'target')
-ax.hlines([fmin_y, fmax_y], fmin_x, fmax_x)
-ax.vlines([fmin_x, fmax_x], fmin_y, fmax_y)
+if fence == 1:
+    ax.hlines([fmin_y, fmax_y], fmin_x, fmax_x)
+    ax.vlines([fmin_x, fmax_x], fmin_y, fmax_y)
 
 alpha = 1
 c_index = 0 #variable to select a color as a function of time

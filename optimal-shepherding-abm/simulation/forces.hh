@@ -82,7 +82,6 @@ void herding::dog_repulsor(double sd_rf [], double angle, int j) {
 // Calculates the long-range force of attraction between sheep
 double herding::sheep_attractor(int j) {
     // Param j: identifier of particle in question
-
     double x_cm = pos_avg[0];
     double y_cm = pos_avg[1];
 
@@ -98,7 +97,6 @@ double herding::sheep_attractor(int j) {
 // Calculates the force due to hard-shell sheep-sheep interaction
 void herding::sheep_repulsor(int j) {
     //Param j: identifier of particle in question
-
     double A = 1;       // Coefficient of repulsion
     double fx = 0;      // x component of the force
     double fy = 0;      // y component of the force
@@ -121,8 +119,8 @@ void herding::sheep_repulsor(int j) {
         }
     }
 
-    ssrf[0] = A*fx; //ssrf[0] is the x-component of the array containing the repulsion vector from all the other sheep to sheep j
-    ssrf[1] = A*fy; //ssrf[1] is the y-component of the array containing the repulsion vector from all the other sheep to sheep j
+    ssrf[0] = A * fx; //ssrf[0] is the x-component of the array containing the repulsion vector from all the other sheep to sheep j
+    ssrf[1] = A * fy; //ssrf[1] is the y-component of the array containing the repulsion vector from all the other sheep to sheep j
 }
 
 
