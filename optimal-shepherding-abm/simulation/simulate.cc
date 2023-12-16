@@ -52,7 +52,6 @@ int main(){
         if (obj.break_when_close() == 1) break;
 
         // Print out the results for a particular interval of timesteps
-
         if (jj % obj.mod_dump_data == 0) {
             obj.print_cost_to_file(fcost, jj); // Print cost data to cost file
             obj.print_data_to_file(fparticles, jj); // Print cost data to data file

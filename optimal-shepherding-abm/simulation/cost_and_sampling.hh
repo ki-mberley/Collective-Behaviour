@@ -34,7 +34,7 @@ void herding::cost_function(int id) {
     for (int k = 0; k < num_agents; k++) {
         dx = x_test[k] - xcm;
         dy = y_test[k] - ycm;
-        dist = dx * dx * dx * dx + dy * dy * dy * dy; // To calculate the L4 nrom
+        dist = dx * dx * dx * dx + dy * dy * dy * dy; // To calculate the L4 norm
         sheep_spread += dist;
     }
 

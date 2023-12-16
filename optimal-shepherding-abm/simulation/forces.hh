@@ -71,7 +71,7 @@ void herding::dog_repulsor(double sd_rf [], double angle, int j) {
     double theta_dr = atan2(dy, dx);
 
     // Adding in an an-isotropic repulsion
-    double lambda1 = 0; //parameter to control strength of anisotropy
+    double lambda1 = 0; // Parameter to control strength of anisotropy
     double f = B * exp(-rid_abs / ld) * exp(cos(theta_dr - angle) * lambda1);
 
     sd_rf[0] = f * cos(theta_dr);
@@ -119,8 +119,8 @@ void herding::sheep_repulsor(int j) {
         }
     }
 
-    ssrf[0] = A * fx; //ssrf[0] is the x-component of the array containing the repulsion vector from all the other sheep to sheep j
-    ssrf[1] = A * fy; //ssrf[1] is the y-component of the array containing the repulsion vector from all the other sheep to sheep j
+    ssrf[0] = A * fx; // ssrf[0] is the x-component of the array containing the repulsion vector from all the other sheep to sheep j
+    ssrf[1] = A * fy; // ssrf[1] is the y-component of the array containing the repulsion vector from all the other sheep to sheep j
 }
 
 

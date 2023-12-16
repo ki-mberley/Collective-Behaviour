@@ -133,13 +133,12 @@ void herding::test_propogate_sheep()
 
 
 void herding::first_round() {
-    // Set array to store results of cost function
-    double min_cost = exp(100); //initial high value of cost function  
-    double max_cost = 0; //initial high value of cost function
-    double tmp_cost = 0; //initial value for temp cost function variable
-
     for (int id = 0; id < num_dogs; id++) {
-        // Double rd_f[2];
+        // Set array to store results of cost function
+        double min_cost = exp(100); // Initial high value of cost function
+        double max_cost = 0;        // Initial high value of cost function
+        double tmp_cost = 0;        // Initial value for temp cost function variable
+
         double xd_f = xdogs[id]; // Initialize & set value for "best" dog x motion
         double yd_f = ydogs[id]; // Initialize & set value for "best" dog y motion
         double xd = xdogs[id];   // Initialize & set value for "current" dog x motion
@@ -147,16 +146,14 @@ void herding::first_round() {
 
         // Begin sampling loop
         for (int k = 0; k < sample_number; k++) {
-
-            // Printf("Is the location checker doing it's job? \n");
-            avg_loc(x, y); //sets the average position of sheep herd
+            avg_loc(x, y); // Sets the average position of sheep herd
 
             // Pick a random angle
             dog_sample_angle = dog_range * (rand() / (double) RAND_MAX - 0.5);
 
             // Pick a specific angle (dog speed dynamically set...v_dog_tmp)
-            xd2 = xd + v_dog_tmp*cos(dog_sample_angle)*dt;
-            yd2 = yd + v_dog_tmp*sin(dog_sample_angle)*dt;
+            xd2 = xd + v_dog_tmp * cos(dog_sample_angle) * dt;
+            yd2 = yd + v_dog_tmp * sin(dog_sample_angle) * dt;
 
             // Hardcoded maximum distance between dog and sheep
             if (sqrt((xd2 - pos_avg[0]) * (xd2 - pos_avg[0]) + (yd2 - pos_avg[1]) * (yd2 - pos_avg[1])) < 5 * dog_dist_factor * ld) { // Begin dog_dist_factor if
@@ -167,11 +164,7 @@ void herding::first_round() {
                 cost_function(id);
                 tmp_cost = cost_function_val[0]; // Set tmp_cost to calculated cost_function value
 
-                // Dump the optimization results to a file
-                // STILL NEED TO IMPLEMENT THIS!!!
-                // fprintf(foptimize, "%d %d %f %f \n", jj, k, dog_sample_angle, tmp_cost);
-
-                //Chooses sample with best value for cost function
+                // Chooses sample with best value for cost function
                 if (tmp_cost <= min_cost) {
                     xd_f = xd2;
                     yd_f = yd2;
@@ -194,7 +187,6 @@ void herding::first_round() {
 
                 printf("crap \n");
             }
-
         }
 
         xdogsf[id] = xd_f;
