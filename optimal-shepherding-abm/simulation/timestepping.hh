@@ -107,6 +107,18 @@ void herding::propogate_herd(int id, double v_dog_tmp, int time) {
         // Update directions of sheep
         theta0 = atan2(ynext, xnext);
         theta2[i] = theta0;
+
+        if (fence == 1) {
+            if (xdogsf[id] > fmax_x) {
+                xdogsf[id] = fmax_x;
+            } else if (ydogsf[id] > fmax_y) {
+                ydogsf[id] = fmax_y;
+            } else if (xdogsf[id] < fmin_x) {
+                xdogsf[id] = fmin_x;
+            } else if(ydogsf[id] < fmin_y) {
+                ydogsf[id] = fmin_y;
+            }
+        }
     }
 }
 
@@ -210,19 +222,19 @@ void herding::first_round() {
 
 // Propogate herd with optimal parameters
 void herding::final_round(int time) {
-        // Propogate sheep using optimal dog parameters
-         for (int id = 0; id < num_dogs; id++) {
-            propogate_herd(id, v_dog_tmp, time); 
+    // Propogate sheep using optimal dog parameters
+     for (int id = 0; id < num_dogs; id++) {
+        propogate_herd(id, v_dog_tmp, time);
+    }
 
-            // Switch pointers for next dog-step
-            double* s_x = x2; x2 = x; x = s_x;
-            double* s_y = y2; y2 = y; y = s_y;
-            double* s_theta = theta2; theta2 = theta; theta = s_theta;
-        }
+    // Switch pointers for next dog-step
+    double* s_x = x2; x2 = x; x = s_x;
+    double* s_y = y2; y2 = y; y = s_y;
+    double* s_theta = theta2; theta2 = theta; theta = s_theta;
 
-        // Switch pointers for dog
-        double* s_xdogs = xdogsf; xdogsf = xdogs; xdogs = s_xdogs;
-        double* s_ydogs = ydogsf; ydogsf = ydogs; ydogs = s_ydogs;
+    // Switch pointers for dog
+    double* s_xdogs = xdogsf; xdogsf = xdogs; xdogs = s_xdogs;
+    double* s_ydogs = ydogsf; ydogsf = ydogs; ydogs = s_ydogs;
 }
 
 

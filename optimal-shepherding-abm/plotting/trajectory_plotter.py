@@ -68,8 +68,8 @@ def colored_line(x, y, lab, z=None, linewidth=1, MAP='jet'):
             z.append(z[-1] + (dx ** 2 + dy ** 2) ** 0.5)
 
         # Set z values
-        zs[i] = np.array([z[i], z[i] ] ).flatten()
-        zs[i + 1] = np.array([z[i + 1], z[i + 1] ]).flatten()
+        zs[i] = np.array([z[i], z[i]]).flatten()
+        zs[i + 1] = np.array([z[i + 1], z[i + 1]]).flatten()
 
     return xs, ys, zs
 
@@ -104,24 +104,19 @@ c_index = 0 # Variable to select a color as a function of time
 # Set max time
 maxtime = timesteps;
 
-for i in range(int(maxtime)):
-    index = num_particles*i
-    tmp_x = xpart[index: index+num_particles]
-    tmp_y = ypart[index: index+num_particles]
-    if i % int(maxtime / 3) == 0:
-        if c_index == 0:
-            color = 'Purple'
-        if c_index == 1:
-            color = 'Cyan'
-        if c_index == 2:
-            color = 'Red'
-        ax.scatter(tmp_x,tmp_y, c = color, s = 2, label = 'sheep at time '+ str(i))
-        ax.scatter(x_dogs[index],y_dogs[index], c = color, s = 100, marker = '^', label = 'dog at time '+ str(i) )
-        c_index +=1
+def plot_positions(ax, time, color):
+    index = num_particles * time
+    tmp_x = xpart[index: index + num_particles]
+    tmp_y = ypart[index: index + num_particles]
 
-    if i == maxtime-1:
-        ax.scatter(tmp_x,tmp_y, c = 'Blue', s = 2, label = 'sheep at time '+ str(i))
-        ax.scatter(x_dogs[index],y_dogs[index], c = 'Blue', s = 100, marker = '^', label = 'dog at time '+ str(i) )
+    ax.scatter(tmp_x, tmp_y, c = color, s = 2, label = 'sheep at time '+ str(time))
+    ax.scatter(x_dogs[index], y_dogs[index], c = color, s = 100, marker = '^', label = 'dog at time '+ str(time))
+
+
+for time, color in zip(range(0, maxtime, maxtime // 3), ['Purple', 'Cyan', 'Red']):
+    plot_positions(ax, time, color)
+
+plot_positions(ax, maxtime - 1, 'Blue')
 
 ax.legend()
 plt.title('Trajectories over time')
