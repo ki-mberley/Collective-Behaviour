@@ -6,6 +6,8 @@ In the context of the course *Collective Behavior*, we decided to investigate th
 
 For the first report we have successfully run the [existing implementation](https://github.com/arphysics/optimal-shepherding/tree/main/ABM_code) of the agent-based model (ABM) and used it to visualize the simulation with a plot and a video. We have also identified the parts of the implementation that are relevant for our project and pushed them to this GitHub repository. While doing so, we corrected the encountered errors and organized the code files in subfolders to make the structure of the implementation easier to understand. 
 
+For the second report we extended the existing implementation with more than one shepherd and a fence. We also adapted the plot and the video to support this extension.
+
 ## Structure of this Repository
 
 - `optimal-shepherding-abm` contains our reduced and corrected version of the existing ABM implementation. More details can be found in the `README` of this subdirectory.
@@ -14,8 +16,7 @@ For the first report we have successfully run the [existing implementation](http
 
 ## Next Steps
 
-- For the [second report](https://github.com/ki-mberley/Collective-Behaviour/milestone/2) (due by December 18, 2023) we plan to extend the ABM implementation such that it supports multiple shepherds.
-- For the [final report](https://github.com/ki-mberley/Collective-Behaviour/milestone/3) (due by January 08, 2024) we plan to investigate which optimal herding strategies emerge in case of multiple shepherds.
+- For the [final report](https://github.com/ki-mberley/Collective-Behaviour/milestone/3) (due by January 08, 2024) we plan to test our model extensions with different parameters and to improve the implementation of these extensions. Additionally, we might implement an existing shepherding algorithm for multiple shepherds and compare its results to the ones of our model.
 
 ## Group Members
 [Franz Muszarsky](https://github.com/Franz0808)\
