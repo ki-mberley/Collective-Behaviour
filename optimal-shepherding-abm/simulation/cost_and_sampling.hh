@@ -53,6 +53,22 @@ void herding::cost_function(int id) {
     // The value of the cost-function
     cost_function_val[0] =  dist_weight * dr + spread_weight * sheep_spread + coll_weight_factor * tmp_driving_cost;
 
+    // Calculate distance between the dogs and penalize if they get too close
+    for (int j = 0; j < num_dogs; j++) {
+        if (id != j) {
+            double shepherd_distance_cost = 0;
+            double dx_dogs = xdogs[j] - tmp_x_dog_target;
+            double dy_dogs = ydogs[j] - tmp_y_dog_target;
+            double dist_dogs = sqrt(dx_dogs * dx_dogs + dy_dogs * dy_dogs);
+
+            if (dist_dogs != 0) {
+                shepherd_distance_cost = shepherd_distance_penalty / dist_dogs;
+            }
+
+            cost_function_val[0] += shepherd_distance_cost;
+        }
+    }
+
     // Spit out cm to be used elsewhere
     cost_function_val[2] = xcm;
     cost_function_val[3] = ycm;

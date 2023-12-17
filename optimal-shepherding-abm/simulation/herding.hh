@@ -46,7 +46,7 @@ class herding {
 		
 		//define parameter variables (see the param file for what each of these parameters means)
 	    double v, v_dog, dt, r, ls, ld, eta, alpha, beta, gamma, delta, x_target, y_target, dog_range;
-	    double bound, grid_spacing, xd_start, yd_start, dist_weight, spread_weight, coll_weight_factor;
+	    double bound, grid_spacing, xd_start, yd_start, dist_weight, spread_weight, coll_weight_factor, shepherd_distance_penalty;
 	    double max_spread_X, min_spread_X;  
 	    double dist_weight_factor, speed_weight_factor, dog_dist_factor;
 	    bool fence, driving_on;

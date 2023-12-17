@@ -49,6 +49,7 @@ void herding::read_params(){
     myfile >>a >> b; dist_weight = a;
     myfile >>a >> b; spread_weight = a;
     myfile >>a >> b; coll_weight_factor = a;
+    myfile >>a >> b; shepherd_distance_penalty = a;
     myfile >>a >> b; max_spread_X = a;
     myfile >>a >> b; min_spread_X = a;
     myfile >>a >> b; dist_weight_factor = a;
@@ -139,7 +140,7 @@ double herding::rand_float() {
     return (double) 2 * rand() / (double) RAND_MAX - 1;
 }
 
-\
+
 // Dumps some of the cost function data to a file
 void herding::print_cost_to_file(FILE* fcost, int jj) {
     fprintf(fcost, "%d %f %f %f %f %f %f %f \n", jj, dist_weight_2, v_dog_tmp, sheep_spread_final, 
