@@ -56,7 +56,7 @@ void herding::sheep_step_no_dog() {
                 y2[i] = fmax_y;
             } else if (x2[i] < fmin_x) {
                 x2[i] = fmin_x;
-            } else if(y2[i] > fmin_y) {
+            } else if(y2[i] < fmin_y) {
                 y2[i] = fmin_y;
             }
         }
@@ -107,6 +107,18 @@ void herding::propogate_herd(int id, double v_dog_tmp, int time) {
         // Update directions of sheep
         theta0 = atan2(ynext, xnext);
         theta2[i] = theta0;
+
+        if (fence == 1) {
+            if (xdogsf[id] > fmax_x) {
+                xdogsf[id] = fmax_x;
+            } else if (ydogsf[id] > fmax_y) {
+                ydogsf[id] = fmax_y;
+            } else if (xdogsf[id] < fmin_x) {
+                xdogsf[id] = fmin_x;
+            } else if(ydogsf[id] < fmin_y) {
+                ydogsf[id] = fmin_y;
+            }
+        }
     }
 }
 
@@ -133,13 +145,12 @@ void herding::test_propogate_sheep()
 
 
 void herding::first_round() {
-    // Set array to store results of cost function
-    double min_cost = exp(100); //initial high value of cost function  
-    double max_cost = 0; //initial high value of cost function
-    double tmp_cost = 0; //initial value for temp cost function variable
-
     for (int id = 0; id < num_dogs; id++) {
-        // Double rd_f[2];
+        // Set array to store results of cost function
+        double min_cost = exp(100); // Initial high value of cost function
+        double max_cost = 0;        // Initial high value of cost function
+        double tmp_cost = 0;        // Initial value for temp cost function variable
+
         double xd_f = xdogs[id]; // Initialize & set value for "best" dog x motion
         double yd_f = ydogs[id]; // Initialize & set value for "best" dog y motion
         double xd = xdogs[id];   // Initialize & set value for "current" dog x motion
@@ -147,16 +158,14 @@ void herding::first_round() {
 
         // Begin sampling loop
         for (int k = 0; k < sample_number; k++) {
-
-            // Printf("Is the location checker doing it's job? \n");
-            avg_loc(x, y); //sets the average position of sheep herd
+            avg_loc(x, y); // Sets the average position of sheep herd
 
             // Pick a random angle
             dog_sample_angle = dog_range * (rand() / (double) RAND_MAX - 0.5);
 
             // Pick a specific angle (dog speed dynamically set...v_dog_tmp)
-            xd2 = xd + v_dog_tmp*cos(dog_sample_angle)*dt;
-            yd2 = yd + v_dog_tmp*sin(dog_sample_angle)*dt;
+            xd2 = xd + v_dog_tmp * cos(dog_sample_angle) * dt;
+            yd2 = yd + v_dog_tmp * sin(dog_sample_angle) * dt;
 
             // Hardcoded maximum distance between dog and sheep
             if (sqrt((xd2 - pos_avg[0]) * (xd2 - pos_avg[0]) + (yd2 - pos_avg[1]) * (yd2 - pos_avg[1])) < 5 * dog_dist_factor * ld) { // Begin dog_dist_factor if
@@ -167,11 +176,7 @@ void herding::first_round() {
                 cost_function(id);
                 tmp_cost = cost_function_val[0]; // Set tmp_cost to calculated cost_function value
 
-                // Dump the optimization results to a file
-                // STILL NEED TO IMPLEMENT THIS!!!
-                // fprintf(foptimize, "%d %d %f %f \n", jj, k, dog_sample_angle, tmp_cost);
-
-                //Chooses sample with best value for cost function
+                // Chooses sample with best value for cost function
                 if (tmp_cost <= min_cost) {
                     xd_f = xd2;
                     yd_f = yd2;
@@ -194,7 +199,6 @@ void herding::first_round() {
 
                 printf("crap \n");
             }
-
         }
 
         xdogsf[id] = xd_f;
@@ -202,14 +206,14 @@ void herding::first_round() {
 
         // Fence repulsion
         if (fence == 1) {
-            if (xdogs[id] > fmax_x) {
-                xdogs[id] = fmax_x;
-            } else if (ydogs[id] > fmax_y) {
-                ydogs[id] = fmax_y;
-            } else if (xdogs[id] < fmin_x) {
-                xdogs[id] = fmin_x;
-            } else if(ydogs[id] > fmin_y) {
-                ydogs[id] = fmin_y;
+            if (xdogsf[id] > fmax_x) {
+                xdogsf[id] = fmax_x;
+            } else if (ydogsf[id] > fmax_y) {
+                ydogsf[id] = fmax_y;
+            } else if (xdogsf[id] < fmin_x) {
+                xdogsf[id] = fmin_x;
+            } else if(ydogsf[id] < fmin_y) {
+                ydogsf[id] = fmin_y;
             }
         }
     }
@@ -218,19 +222,19 @@ void herding::first_round() {
 
 // Propogate herd with optimal parameters
 void herding::final_round(int time) {
-        // Propogate sheep using optimal dog parameters
-         for (int id = 0; id < num_dogs; id++) {
-            propogate_herd(id, v_dog_tmp, time); 
+    // Propogate sheep using optimal dog parameters
+     for (int id = 0; id < num_dogs; id++) {
+        propogate_herd(id, v_dog_tmp, time);
+    }
 
-            // Switch pointers for next dog-step
-            double* s_x = x2; x2 = x; x = s_x;
-            double* s_y = y2; y2 = y; y = s_y;
-            double* s_theta = theta2; theta2 = theta; theta = s_theta;
-        }
+    // Switch pointers for next dog-step
+    double* s_x = x2; x2 = x; x = s_x;
+    double* s_y = y2; y2 = y; y = s_y;
+    double* s_theta = theta2; theta2 = theta; theta = s_theta;
 
-        // Switch pointers for dog
-        double* s_xdogs = xdogsf; xdogsf = xdogs; xdogs = s_xdogs;
-        double* s_ydogs = ydogsf; ydogsf = ydogs; ydogs = s_ydogs;
+    // Switch pointers for dog
+    double* s_xdogs = xdogsf; xdogsf = xdogs; xdogs = s_xdogs;
+    double* s_ydogs = ydogsf; ydogsf = ydogs; ydogs = s_ydogs;
 }
 
 

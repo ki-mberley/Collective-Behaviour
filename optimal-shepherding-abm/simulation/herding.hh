@@ -46,7 +46,7 @@ class herding {
 		
 		//define parameter variables (see the param file for what each of these parameters means)
 	    double v, v_dog, dt, r, ls, ld, eta, alpha, beta, gamma, delta, x_target, y_target, dog_range;
-	    double bound, grid_spacing, xd_start, yd_start, dist_weight, spread_weight, coll_weight_factor;
+	    double bound, grid_spacing, xd_start, yd_start, dist_weight, spread_weight, coll_weight_factor, shepherd_distance_penalty;
 	    double max_spread_X, min_spread_X;  
 	    double dist_weight_factor, speed_weight_factor, dog_dist_factor;
 	    bool fence, driving_on;
@@ -58,12 +58,13 @@ class herding {
 	    double xd2; double yd2; //temporary location of a single dog for next timestep
 
 
-	    // //Additional temporary arrays / variables
-	    double pos_avg[2] = {}; //temporary array to store the average position of the sheep herd for that timestep
-	    double ssrf[2] = {}; //array to store sheep-sheep repulsion force
-        double sfrf[2] = {}; // Array to store sheep-fence repulsion force
-	    double cost_function_val[4] = {}; //array to store the cost function values and parameters
-	    double dog_sample_angle; //make this array
+	    // Additional temporary arrays / variables
+	    double pos_avg[2] = {};             // Temporary array to store the average position of the sheep herd for that timestep
+	    double ssrf[2] = {};                // Array to store sheep-sheep repulsion force
+        double sfrf[2] = {};                // Array to store sheep-fence repulsion force
+        double ddrf[2] = {};                // Array to store dog-dog repulsion force
+	    double cost_function_val[4] = {};   // Array to store the cost function values and parameters
+	    double dog_sample_angle;            // Make this array
 
 
 	    double sheep_spread2, sheep_spread_final, dist_weight_2;
@@ -76,7 +77,7 @@ class herding {
 	public:
 	//arrays in the class
 		double* x; //temporary array to store x positions of sheep for a single timestep
-	    double* y; //temporary array to store y positions of sheepfor a single timestep
+	    double* y; //temporary array to store y positions of sheep for a single timestep
 	    double* theta; //temporary array to store angles for a single timestep
 
 	    double* x2; //temporary array to store x positions for next  timestep

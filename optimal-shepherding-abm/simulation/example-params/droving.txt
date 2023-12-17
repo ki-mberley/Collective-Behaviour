@@ -24,6 +24,7 @@
 1 #dist_weight_for_cost_function
 5 #spread_weight_for_cost_function
 0.001 #collinear_weight_for_cost_function
+0.01 #shepherd_distance_penalty
 0 #max_spread_X*ls
 0 #min_spread_X*ls
 0 #dist_weight_factor
@@ -31,5 +32,9 @@
 0 #driving_on?
 10 #max_ld*X_distance_sheep_to_dogs_for_interaction
 0 #fence_(0_for_off)
+-6 #fmin_x
+6 #fmax_x
+-6 #fmin_y
+6 #fmax_y
 5 #how_often_to_dump_data
 1 #how_often_to_plot_data
