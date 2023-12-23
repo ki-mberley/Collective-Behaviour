@@ -18,7 +18,8 @@ t0 = time.time()
 dat_field = np.loadtxt('../simulation/data.txt') #x,y position data for herd and dogs
 
 # Load info from parameter file
-driving_on, x_target, y_target, vs, vd, ls, ld, fence, num_particles, ndogs, modder = load_params_auto('../simulation/params.txt')
+parameters = np.loadtxt('../simulation/params.txt')
+driving_on, x_target, y_target, vs, vd, ls, ld, fence, fmin_x, fmax_x, fmin_y, fmax_y, num_particles, ndogs, modder = load_params(parameters)
 
 # Load info from data file
 xpart, ypart, thetapart, x_dogs, y_dogs, dat_times, timesteps, times, = load_data(dat_field, num_particles)
@@ -56,11 +57,6 @@ def colored_line(x, y, lab, z=None, linewidth=1, MAP='jet'):
         
     return xs, ys, zs
 
-
-# Plot the fence boundary
-if fence == 1:
-    xwall, ywall, xt_array, yt_array = plot_fence(L, x_target, y_target, ld)
-
 counterr = 0
 for t in range(timesteps):
     if t % modder == 0:
@@ -91,9 +87,11 @@ for t in range(timesteps):
         tmp_x_2 = (tmp_x - rot_x_center) * np.cos(tmp_herd_dog_angle) - (tmp_y - rot_y_center) * np.sin(tmp_herd_dog_angle)
         tmp_y_2 = (tmp_y - rot_y_center) * np.cos(tmp_herd_dog_angle) + (tmp_x - rot_x_center) * np.sin(tmp_herd_dog_angle)
 
-        fig, (ax2, ax1) = plt.subplots(1, 2, figsize = (16, 8))
-        ax1.set_aspect('equal')
-        ax2.set_aspect('equal')
+        # fig, (ax2, ax1) = plt.subplots(1, 2, figsize = (16, 8))
+        # ax1.set_aspect('equal')
+        # ax2.set_aspect('equal')
+        fig, (ax) = plt.subplots(1, 1, figsize = (16, 8))
+        ax.set_aspect('equal')
         title = 'System at time = ' + str(int(dat_times[index]))
         fig.suptitle(title)
         name = './plots/plot' + str(counterr).zfill(4)
@@ -104,7 +102,8 @@ for t in range(timesteps):
 
         scale = np.max([scale_dog, scale_sheep])
 
-
+        # removed the video on the right side
+        """ 
         ## Clone view
         clone_view = 1
 
@@ -169,26 +168,24 @@ for t in range(timesteps):
             ax1.set_ylim(-1.5*scale,1.5*scale)
             ax2.set_xlim(-L,3)
             ax2.set_ylim(-3,L)
-
+        """
 
         # Drone view
         drone_view = 1
 
         if drone_view:
-            # Hardcoded for one dog
             blah = t+1
             xdogs = x_dogs[::num_particles][:blah]
             ydogs = y_dogs[::num_particles][:blah]
 
-            xd, yd, zd = colored_line(xdogs, ydogs, 1, linewidth = .05)
-
-            #ax2.pcolormesh(xs, ys, zs, shading='gouraud', cmap='Blues', label = 'Sheep')
-            ax2.pcolormesh(xd, yd, zd, shading='gouraud', cmap='Greys', label = 'Dogs', alpha = 0.2)
+            for i in range(ndogs):
+                xd, yd, zd = colored_line(xdogs[:, i], ydogs[:, i], 1, linewidth = .05)
+                ax.pcolormesh(xd, yd, zd, shading='gouraud', cmap='Greys', label = 'Dogs', alpha = 0.2)
 
             tmp_herd_dog_angle = 0*np.arctan2(y_target-y_avg, x_target-x_avg)
 
             # Plots the center of mass
-            ax2.plot(x_avg,y_avg, 'r.', markersize = 3, label = "Herd CM") #herd CM
+            ax.plot(x_avg,y_avg, 'r.', markersize = 3, label = "Herd CM") #herd CM
 
             angle_array = np.linspace(-np.pi, np.pi, 500)
             #angle_array = [ii - tmp_target_angle for ii in angle_array]
@@ -201,12 +198,12 @@ for t in range(timesteps):
             y_colors = y_colors_p*np.cos(tmp_herd_dog_angle)+x_colors_p*np.sin(tmp_herd_dog_angle)+y_offset
 
             angle_colors = [colorator(p) for p in angle_array]
-            ax2.scatter(x_colors, y_colors, color = angle_colors)
+            ax.scatter(x_colors, y_colors, color = angle_colors)
 
 
             # Plot the data
             #ax2.scatter(tmp_x, tmp_y, c = tmp_theta%(2*np.pi), marker = ".")
-            ax2.scatter(tmp_x, tmp_y, c = [colorator(iii) for iii in tmp_theta], marker = ".")
+            ax.scatter(tmp_x, tmp_y, c = [colorator(iii) for iii in tmp_theta], marker = ".")
 
             # Make the box
             tmp_herd_dog_angle = (np.pi/2-np.arctan2(y_target, x_target))
@@ -232,18 +229,24 @@ for t in range(timesteps):
             tmp_x_box_left = scale*((tmp_box_lines_x_2-1-x_avg)*np.cos(tmp_herd_dog_angle)-(tmp_box_lines_y_2-y_avg)*np.sin(tmp_herd_dog_angle))
             tmp_y_box_left = scale*((tmp_box_lines_y_2-y_avg)*np.cos(tmp_herd_dog_angle)+(tmp_box_lines_x_2-1-x_avg)*np.sin(tmp_herd_dog_angle))
 
-            ax2.plot(tmp_x_box_top+x_avg, tmp_y_box_top+y_avg, 'k--', alpha = 0.25)
-            ax2.plot(tmp_x_box_bot+x_avg, tmp_y_box_bot+y_avg, 'k--', alpha = 0.25)
-            ax2.plot(tmp_x_box_right+x_avg, tmp_y_box_right+y_avg, 'k--', alpha = 0.25)
-            ax2.plot(tmp_x_box_left+x_avg, tmp_y_box_left+y_avg, 'k--', alpha = 0.25)
+            # ax2.plot(tmp_x_box_top+x_avg, tmp_y_box_top+y_avg, 'k--', alpha = 0.25)
+            # ax2.plot(tmp_x_box_bot+x_avg, tmp_y_box_bot+y_avg, 'k--', alpha = 0.25)
+            # ax2.plot(tmp_x_box_right+x_avg, tmp_y_box_right+y_avg, 'k--', alpha = 0.25)
+            # ax2.plot(tmp_x_box_left+x_avg, tmp_y_box_left+y_avg, 'k--', alpha = 0.25)
 
             # Plot dogs
             for dd in range(ndogs):
                 tag = "Dog" + str(dd)
-                ax2.plot(x_dogs[index,dd],y_dogs[index,dd], 'kX', markersize = 10, label = tag)
+                ax.plot(x_dogs[index,dd],y_dogs[index,dd], 'kX', markersize = 10, label = tag)
+                
+            # Plot the fence boundary
+            if fence == 1:
+                # xwall, ywall, xt_array, yt_array = plot_fence(L, x_target, y_target, ld)
+                ax.hlines([fmin_y, fmax_y], fmin_x, fmax_x)
+                ax.vlines([fmin_x, fmax_x], fmin_y, fmax_y)
 
             #Plot target
-            ax2.plot(x_target, y_target, 'gD', markersize = 20, label = "Target")
+            ax.plot(x_target, y_target, 'gD', markersize = 20, label = "Target")
 
         fig.savefig(name)
     
