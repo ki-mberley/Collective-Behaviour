@@ -1,4 +1,4 @@
-# Load the common configuration file
+# load the common configuration file
 include ../config.mk
 
 objs=herd.o
@@ -9,10 +9,10 @@ all: $(execs)
 
 executables: $(execs)
 
-# Include the file dependencies
+# include the file dependencies
 -include Makefile.dep
 
-# A Makefile target to refresh the dependency file
+# a Makefile target to refresh the dependency file
 depend: $(src)
 	$(cxx) -MM $(src) >Makefile.dep
 
@@ -21,7 +21,7 @@ depend: $(src)
 %.o: %.cc
 	$(cxx) $(cflags) $(iflags) -c $<
 
-# A Makefile target to remove all the built files
+# a Makefile target to remove all the built files
 clean:
 	rm -f $(objs) $(execs)
 

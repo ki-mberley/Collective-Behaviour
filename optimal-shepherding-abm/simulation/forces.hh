@@ -11,27 +11,26 @@ using namespace std;
 
 #include "herding.hh"
 
-
-// Finds the orientation of a single person j, at a time t
+// finds the orientation of a single agent j, at a time t
 double herding::viscek(int j) {
-    // Param j: identifier of particle in question
+    // param j: identifier of particle in question
 
-    // Temporary variables
-    double delta; // Used to calculate the square distance
+    // temporary variables
+    double delta; // used to calculate the square distance
     double tmp_sum = 0;
     double counter = 0;
 
-    // Add random uniform noise to each particle's position
+    // add random uniform noise to each particle's position
     double noise = eta * 2 * (rand() / (double) RAND_MAX - 0.5);
 
-    // Loop over the agents and find particles within radius of interaction
+    // loop over the agents and find particles within radius of interaction
     for (int k = 0; k < num_agents; k++) {
         delta = (x[j] - x[k]) * (x[j] - x[k])
               + (y[j] - y[k]) * (y[j] - y[k]);
 
-        // Enforce Viscek radius
+        // enforce Viscek radius
         if (delta < r * r) {
-            // Find average orientation of nearest neighbors
+            // find average orientation of nearest neighbors
             tmp_sum = tmp_sum + theta[k];
             counter += 1;
       }
@@ -40,9 +39,9 @@ double herding::viscek(int j) {
 }
 
 
-// Finds the direction for the dog to move towards the cm of the herd
+// finds the direction for the dog to move towards the cm of the herd
 double herding::dog_direction(int id){
-    // Average position of sheep herd
+    // average position of sheep herd
     double x_cm = pos_avg[0];
     double y_cm = pos_avg[1];
 
@@ -55,23 +54,22 @@ double herding::dog_direction(int id){
 }
 
 
-// Calculates the repulsion between sheep and dog
+// calculates the repulsion between sheep and dog
 void herding::dog_repulsor(double sd_rf [], double angle, int j) {
-    // Param j: identifier of particle in question
-    // Param angle: direction that the dog is moving in for implementing anisotropic repulsion (currently set to 0)
-    // Param sd_rf: 2D array to store force from the dog
+    // param j: identifier of sheep in question
+    // param angle: direction that the dog is moving in for implementing anisotropic repulsion (currently set to 0)
+    // param sd_rf: 2D array to store force from the dog
 
-    double B = 1; // Arbitrary coefficient for the dog repulsion;
+    double B = 1; // arbitrary coefficient for the dog repulsion;
 
-    // Currently we have hardcoded in 1 dog
     double dx = x[j] - xd2;
     double dy = y[j] - yd2;
 
     double rid_abs = sqrt(dx * dx + dy * dy);
     double theta_dr = atan2(dy, dx);
 
-    // Adding in an an-isotropic repulsion
-    double lambda1 = 0; // Parameter to control strength of anisotropy
+    // adding in an an-isotropic repulsion
+    double lambda1 = 0; // parameter to control strength of anisotropy
     double f = B * exp(-rid_abs / ld) * exp(cos(theta_dr - angle) * lambda1);
 
     sd_rf[0] = f * cos(theta_dr);
@@ -79,9 +77,9 @@ void herding::dog_repulsor(double sd_rf [], double angle, int j) {
 }
 
 
-// Calculates the long-range force of attraction between sheep
+// calculates the long-range force of attraction between sheep
 double herding::sheep_attractor(int j) {
-    // Param j: identifier of particle in question
+    // param j: identifier of particle in question
     double x_cm = pos_avg[0];
     double y_cm = pos_avg[1];
 
@@ -94,16 +92,16 @@ double herding::sheep_attractor(int j) {
 }
 
 
-// Calculates the force due to hard-shell sheep-sheep interaction
+// calculates the force due to hard-shell sheep-sheep interaction
 void herding::sheep_repulsor(int j) {
-    //Param j: identifier of particle in question
-    double A = 1;       // Coefficient of repulsion
+    // param j: identifier of sheep in question
+    double A = 1;       // coefficient of repulsion
     double fx = 0;      // x component of the force
     double fy = 0;      // y component of the force
     double dx;          // x distance between two particles
     double dy;          // y distance between two particles
-    double rid_abs;     // Total distance between two particles
-    double theta_dr;    // Sets the direction of the force
+    double rid_abs;     // total distance between two particles
+    double theta_dr;    // sets the direction of the force
 
     for (int k = 0; k < num_agents; k++) {
         if (j != k) {
@@ -125,11 +123,3 @@ void herding::sheep_repulsor(int j) {
 
 
 #endif
-
-
-
-
-
-
-
-

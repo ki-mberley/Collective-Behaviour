@@ -12,29 +12,28 @@ using namespace std;
 #include "herding.hh"
 #include "forces.hh"
 
-
-// Calculate the cost function
+// calculate the cost function
 void herding::cost_function(int id) {
-    // Metrics for evaluating the cost function
-    avg_loc(x_test, y_test); // Calculates the average position of sheep herd
+    // metrics for evaluating the cost function
+    avg_loc(x_test, y_test); // calculates the average position of the sheep herd
 
-    // Find the distance to the target
+    // find the distance to the target
     double dx; double dy;
-    double dr; // Set variables to use within functions
-    double xcm = pos_avg[0]; double ycm = pos_avg[1]; // Set xcm, ycm positions
+    double dr; // set variables to use within functions
+    double xcm = pos_avg[0]; double ycm = pos_avg[1]; // set xcm, ycm positions
     double dist;
 
-    // Calculate distance term
+    // calculate distance term
     dx = x_target - xcm;
     dy = y_target - ycm;
     dr = sqrt(dx * dx + dy * dy);
 
-    // Standard deviation
+    // standard deviation
     double sheep_spread = 0;
     for (int k = 0; k < num_agents; k++) {
         dx = x_test[k] - xcm;
         dy = y_test[k] - ycm;
-        dist = dx * dx * dx * dx + dy * dy * dy * dy; // To calculate the L4 norm
+        dist = dx * dx * dx * dx + dy * dy * dy * dy; // to calculate the L4 norm
         sheep_spread += dist;
     }
 
@@ -44,16 +43,16 @@ void herding::cost_function(int id) {
 
     double tmp_angle_herd_target = atan2(y_target-pos_avg[1], x_target - pos_avg[0]); // herd-cm to target angle
 
-    // Define this as the "dog target"
+    // define this as the "dog target"
     double tmp_x_dog_target = pos_avg[0] - ld * cos(tmp_angle_herd_target);
     double tmp_y_dog_target = pos_avg[1] - ld * sin(tmp_angle_herd_target);
 
     double tmp_driving_cost = (xd2 - tmp_x_dog_target) * (xd2 - tmp_x_dog_target) + (yd2 - tmp_y_dog_target) * (yd2 - tmp_y_dog_target);
 
-    // The value of the cost-function
+    // the value of the cost-function
     cost_function_val[0] =  dist_weight * dr + spread_weight * sheep_spread + coll_weight_factor * tmp_driving_cost;
 
-    // Calculate distance between the dogs and penalize if they get too close
+    // calculate distance between the dogs and penalize if they get too close
     for (int j = 0; j < num_dogs; j++) {
         if (id != j) {
             double shepherd_distance_cost = 0;
@@ -69,7 +68,7 @@ void herding::cost_function(int id) {
         }
     }
 
-    // Spit out cm to be used elsewhere
+    // spit out cm to be used elsewhere
     cost_function_val[2] = xcm;
     cost_function_val[3] = ycm;
 }

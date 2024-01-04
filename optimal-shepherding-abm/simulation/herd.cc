@@ -66,7 +66,7 @@ void herding::read_params(){
 
 
 void herding::print_data_to_file(FILE* fparticles, int jj) {
-    // Dumps sheep and dog position and orientations to a data file
+    // dumps sheep and dog position and orientations to a data file
     for (int i = 0; i < num_agents; i++) {
         fprintf(fparticles, "%d %d %f %f %f", jj, i, x[i], y[i], theta[i]);
         for(int id = 0; id < num_dogs; id++) fprintf(fparticles, " %f %f",xdogsf[id], ydogsf[id]);
@@ -76,31 +76,30 @@ void herding::print_data_to_file(FILE* fparticles, int jj) {
 
 
 void herding::init_arrs_and_vars() {
-    // Initializes arrays and variables
+    // initializes arrays and variables
     
-    // Sheep
-    x = new double[num_agents];         // Temporary array to store x positions of sheep for a single timestep
-    y = new double[num_agents];         // Temporary array to store y positions of sheepfor a single timestep
-    theta = new double[num_agents];     // Temporary array to store angles for a single timestep
+    // sheep
+    x = new double[num_agents];         // temporary array to store x positions of sheep for a single timestep
+    y = new double[num_agents];         // temporary array to store y positions of sheep for a single timestep
+    theta = new double[num_agents];     // temporary array to store angles for a single timestep
 
-    x2 = new double[num_agents];        // Temporary array to store x positions for next  timestep
-    y2 = new double[num_agents];        // Temporary array to store y positions for next timestep
-    theta2 = new double[num_agents];    // Temporary array to store angles for next timestep
+    x2 = new double[num_agents];        // temporary array to store x positions for next timestep
+    y2 = new double[num_agents];        // temporary array to store y positions for next timestep
+    theta2 = new double[num_agents];    // temporary array to store angles for next timestep
 
-    x_test = new double[num_agents];    // Temporary array to store sampling positions for next  timestep
-    y_test = new double[num_agents];    // Temporary array to store sampling positions for next timestep
+    x_test = new double[num_agents];    // temporary array to store sampling positions for next timestep
+    y_test = new double[num_agents];    // temporary array to store sampling positions for next timestep
 
-    // Dog(s)
-    xdogs = new double[num_dogs];       // Array to store x positions of dogs
-    ydogs = new double[num_dogs];       // Array to store y positions of dogs
-    xdogsf = new double[num_dogs];      // Temporary array to store x positions of dogs
-    ydogsf = new double[num_dogs];      // Temporary array to store y positions of dogs
+    // dog(s)
+    xdogs = new double[num_dogs];       // array to store x positions of dogs
+    ydogs = new double[num_dogs];       // array to store y positions of dogs
+    xdogsf = new double[num_dogs];      // temporary array to store x positions of dogs
+    ydogsf = new double[num_dogs];      // temporary array to store y positions of dogs
 
-    // Additional temp arrays / variables
-    //THIS SECTION NEEDS TO BE CLEANED UP (as of 02/08/2021)
+    // additional temp arrays / variables
     sheep_spread2 = 0;
     sheep_spread_final = 0;
-    dist_weight_2 = dist_weight; // Alpha value to play with
+    dist_weight_2 = dist_weight; // alpha value to play with
     v_dog_tmp = v_dog;
     max_spread = max_spread_X*ls;
     min_spread = min_spread_X*ls; 
@@ -110,9 +109,9 @@ void herding::init_arrs_and_vars() {
 }
 
 
-// Initialize dog positions
+// initialize dog positions
 void herding::initialize_dogs() {
-    // Initializes the position and orientation of the dog at time t = 0
+    // initializes the position and orientation of the dog(s) at time t = 0
     for (int i = 0; i < num_dogs; i++) {
         xdogs[i] = xd_start;
         ydogs[i] = yd_start;
@@ -123,9 +122,9 @@ void herding::initialize_dogs() {
 }
 
 
-// Initialize sheep positions
+// initialize sheep positions
 void herding::initialize_sheep(FILE* fparticles) {
-    // Initializes positions and orientations of the sheep
+    // initializes positions and orientations of the sheep
     for (int i=0; i < num_agents; i++) {
         x[i] = bound * rand_float();
         y[i] = bound * rand_float();
@@ -135,13 +134,13 @@ void herding::initialize_sheep(FILE* fparticles) {
 }
 
 
-// Function to generate random value -1 to 1
+// function to generate random value -1 to 1
 double herding::rand_float() {
     return (double) 2 * rand() / (double) RAND_MAX - 1;
 }
 
 
-// Dumps some of the cost function data to a file
+// dumps some of the cost function data to a file
 void herding::print_cost_to_file(FILE* fcost, int jj) {
     fprintf(fcost, "%d %f %f %f %f %f %f %f \n", jj, dist_weight_2, v_dog_tmp, sheep_spread_final, 
     xcm_final, ycm_final ,xdogsf[0], ydogsf[0]);
@@ -155,7 +154,7 @@ void herding::print_params() {
     cout << "gamma: " << gamma << endl;
 }
 
-// Break if herd CM is very close to target
+// break if herd CM is very close to target
 int herding::break_when_close() {
     if ((xcm_final - x_target) * (xcm_final - x_target) + (ycm_final - y_target) * (ycm_final - y_target) < (num_agents * ls) * (1)) {
         printf("Close enough!!\n");
@@ -165,7 +164,7 @@ int herding::break_when_close() {
 }
 
 
-// Finds the average location of sheep at each timestep
+// finds the average location of sheep at each timestep
 void herding::avg_loc(double x_array[], double y_array[]) {
     /*param x: array containing x position of all the sheep
     param y: array containing y position of all the sheep
@@ -174,13 +173,12 @@ void herding::avg_loc(double x_array[], double y_array[]) {
     double tmp_x = 0;
     double tmp_y = 0;
 
-    // Find the average location of x & y
+    // find the average location of x & y
     for (int i = 0; i < num_agents; i++) {
       tmp_x += x_array[i];
       tmp_y += y_array[i];
     }
 
-    pos_avg[0] = tmp_x / num_agents; //set pointer array to average x location
-    pos_avg[1] = tmp_y / num_agents; //set pointer array to average y location
+    pos_avg[0] = tmp_x / num_agents; // set pointer array to average x location
+    pos_avg[1] = tmp_y / num_agents; // set pointer array to average y location
 }
-

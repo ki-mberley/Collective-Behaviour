@@ -1,37 +1,35 @@
-#python3
+# python3
 
-#import libraries
+# import libraries
 import numpy as np
 import matplotlib.pyplot as plt
 plt.rcParams.update({'figure.max_open_warning': 0})
 import time
-import os
 from auxiliary_functions import *
 
 import warnings
 warnings.filterwarnings("ignore")
 
-L = 10 #size of domain to plot
-#modder = 3 #how often to convert frames to video
+L = 10 # size of domain to plot
 
 t0 = time.time()
 
-dat_field = np.loadtxt('../simulation/data.txt') #x,y position data for herd and dogs
-parameters = np.loadtxt('../simulation/params.txt') #info from parameter file (change function when params changes)
+dat_field = np.loadtxt('../simulation/data.txt') # x,y position data for herd and dogs
+parameters = np.loadtxt('../simulation/params.txt') # info from parameter file (change function when params changes)
 
-# Load info from parameter file
+# load info from parameter file
 driving_on, x_target, y_target, vs, vd, ls, ld, fence, fmin_x, fmax_x, fmin_y, fmax_y, num_particles, ndogs, modder = load_params(parameters)
 
-# Load info from data file
+# load info from data file
 xpart, ypart, thetapart, x_dogs, y_dogs, dat_times, timesteps, times, = load_data(dat_field, num_particles)
 
 sanity_checks(dat_field, num_particles, ndogs, timesteps)
 
-# Calculate mean sheep trajectory
+# calculate mean sheep trajectory
 xmeans = np.zeros(timesteps)
 ymeans = np.zeros(timesteps)
 
-# Plot the trajectories
+# plot the trajectories
 print('plotting trajectory')
 alpha = 1
 for i in range(timesteps):
@@ -42,8 +40,8 @@ for i in range(timesteps):
     xmeans[i] = np.mean(tmp_x)
     ymeans[i] = np.mean(tmp_y)
 
-def colored_line(x, y, lab, z=None, linewidth=1, MAP='jet'):
-    # This uses pcolormesh to make interpolated rectangles
+def colored_line(x, y, z=None, linewidth=1, MAP='jet'):
+    # this uses pcolormesh to make interpolated rectangles
     xl = len(x)
     [xs, ys, zs] = [np.zeros((xl, 2)), np.zeros((xl, 2)), np.zeros((xl, 2))]
 
@@ -52,13 +50,13 @@ def colored_line(x, y, lab, z=None, linewidth=1, MAP='jet'):
         z = [0]
 
     for i in range(xl - 1):
-        # Make a vector to thicken our line points
+        # make a vector to thicken our line points
         dx = x[i + 1] - x[i]
         dy = y[i + 1] - y[i]
         perp = np.array([-dy, dx])
         unit_perp = (perp / np.linalg.norm(perp)) * linewidth
 
-        # Need to make 4 points for quadrilateral
+        # need to make 4 points for quadrilateral
         xs[i] = np.array([x[i], x[i] + unit_perp[0]]).flatten()
         ys[i] = np.array([y[i], y[i] + unit_perp[1]]).flatten()
         xs[i+1] = np.array([x[i+1], x[i+1] + unit_perp[0]]).flatten()
@@ -67,30 +65,29 @@ def colored_line(x, y, lab, z=None, linewidth=1, MAP='jet'):
         if len(z) == i + 1:
             z.append(z[-1] + (dx ** 2 + dy ** 2) ** 0.5)
 
-        # Set z values
+        # set z values
         zs[i] = np.array([z[i], z[i]]).flatten()
         zs[i + 1] = np.array([z[i + 1], z[i + 1]]).flatten()
 
     return xs, ys, zs
 
-
-# Calculate dog trajectory at each time step
+# calculate dog trajectory at each time step
 xdogs = x_dogs[::num_particles][:-1]
 ydogs = y_dogs[::num_particles][:-1]
 
-#calculate dog trajectory at each time step
+# calculate dog trajectory at each time step
 xdogs = x_dogs[::num_particles][:-1]
 ydogs = y_dogs[::num_particles][:-1]
 
-# Store variables
-xs, ys, zs = colored_line(xmeans, ymeans, 0, linewidth = .3)
+# store variables
+xs, ys, zs = colored_line(xmeans, ymeans, linewidth = .3)
 
-# Make the plots
+# make the plots
 fig, ax = plt.subplots(figsize = (15, 10))
 ax.pcolormesh(xs, ys, zs, shading='gouraud', cmap='Blues', label = 'Sheep')
 
 for i in range(ndogs):
-    xd, yd, zd = colored_line(xdogs[:, i], ydogs[:, i], 1, linewidth = .05)
+    xd, yd, zd = colored_line(xdogs[:, i], ydogs[:, i], linewidth = .05)
     ax.pcolormesh(xd, yd, zd, shading='gouraud', cmap='Greys', label = 'Dogs')
 
 ax.scatter(x_target, y_target, c = 'Orange', marker = 'D', s = 50, label = 'target')
@@ -99,9 +96,9 @@ if fence == 1:
     ax.vlines([fmin_x, fmax_x], fmin_y, fmax_y)
 
 alpha = 1
-c_index = 0 # Variable to select a color as a function of time
+c_index = 0 # variable to select a color as a function of time
 
-# Set max time
+# set max time
 maxtime = timesteps;
 
 def plot_positions(ax, time, color):
@@ -124,5 +121,4 @@ plt.xlabel('x motion')
 plt.ylabel('y motion')
 plt.xlim(-L,L)
 plt.ylim(-L,L)
-#plt.show()
 plt.savefig('plots/output_plot.pdf')

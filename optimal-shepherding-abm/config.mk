@@ -1,7 +1,7 @@
 # C++ compiler
 cxx=g++-11 -fopenmp
 
-# Compilation flags
+# compilation flags
 cflags=-Wall -pedantic -O3 -std=c++11
 
 # BLAS/LAPACK flags for linear algebra
