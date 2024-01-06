@@ -9,8 +9,8 @@ using namespace std;
 int main(){
     herding obj;
 
-    // srand(obj.seed); // set a specific seed for debugging or comparisons
-    srand(omp_get_wtime()); // set a random seed for each simulation
+    srand(obj.seed); // set a specific seed for debugging or comparisons
+    // srand(omp_get_wtime()); // set a random seed for each simulation
 
     // read variables from param.txt file
     obj.read_params();
@@ -38,7 +38,8 @@ int main(){
     obj.print_data_to_file(fparticles, 0);
 
     // timestepping
-    for(int jj = 1; jj < obj.timesteps; jj++) {
+    int jj = 1;
+    for(; jj < obj.timesteps; jj++) {
         // tun vicsek, cm attraction, hard repulsion force, and wall repulsion
         obj.sheep_step_no_dog();
 
@@ -57,4 +58,5 @@ int main(){
             obj.print_data_to_file(fparticles, jj); // print cost data to data file
         }
     }
+    printf("Number of timesteps: %i\n", jj);
 }
