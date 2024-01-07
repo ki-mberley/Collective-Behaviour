@@ -9,8 +9,8 @@ using namespace std;
 int main(){
     herding obj;
 
-    srand(obj.seed); // set a specific seed for debugging or comparisons
-    // srand(omp_get_wtime()); // set a random seed for each simulation
+    // srand(obj.seed); // set a specific seed for debugging or comparisons
+    srand(omp_get_wtime()); // set a random seed for each simulation
 
     // read variables from param.txt and params_shepherd_abm.txt file
     obj.read_params();
