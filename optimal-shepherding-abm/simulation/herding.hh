@@ -11,6 +11,7 @@ class herding {
 	public:
 		// functions in the class for setup
 		void read_params(); // reads in and sets varaibles based on param file
+		void read_params_shepherd_ABM();
 		void print_params(); // prints value of params
 		void init_arrs_and_vars(); // initializes dynamic arrays
 		void initialize_dogs(); // initializes position of dogs
@@ -31,6 +32,7 @@ class herding {
 		void test_propogate_sheep(); // tentatively moves the herd forward but does not switch pointers; used in optimization tests
 		void first_round(); // calculates the cost function for iterations equal to the sample number and chooses the optimal dog behavior
 		void final_round(int); // moves the entire system forward by one timestep according to the optimal dog behavior
+		void shepherd_agent_movement();
 
 		// cost function
 		void cost_function(int); // evaluates the objective function given the state of the system
@@ -51,11 +53,11 @@ class herding {
 	    double xd2; double yd2; // temporary location of a single dog for next timestep
 
 	    // additional temporary arrays / variables
-	    double pos_avg[2] = {};             // temporary array to store the average position of the sheep herd for that timestep
 	    double ssrf[2] = {};                // array to store sheep-sheep repulsion force
         double sfrf[2] = {};                // array to store sheep-fence repulsion force
         double ddrf[2] = {};                // array to store dog-dog repulsion force
 	    double cost_function_val[4] = {};   // array to store the cost function values and parameters
+		double pos_avg[2] = {}; // temporary array to store the average position of the sheep herd for that timestep
 	    double dog_sample_angle;            // make this array
 
 	    double sheep_spread2, sheep_spread_final, dist_weight_2;
@@ -73,7 +75,7 @@ class herding {
 
 	    double* x_test; // temporary array to store sampling positions for next timestep
 	    double* y_test; // temporary array to store sampling positions for next timestep
-
+		
 	    //dog(s)
 	    double* xdogs; // array to store x positions of dogs
 	    double* ydogs; // array to store y positions of dogs
@@ -82,6 +84,9 @@ class herding {
 
 	    // some more parameters that are defined in the parameter file
 	    int timesteps, num_agents, num_dogs, L, sample_number, mod_dump_data;
+
+		// parameters defined in the params_shepherd_abm file
+		double sheep_influence_radius, shepherd_influence_radius, shepherding_influence_radius, driving_force_weight, collecting_force_weight, shepherd_repulsion_weight, shepherd_attraction_weight;
 
 	   	double seed = 1231.12;
 

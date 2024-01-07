@@ -3,7 +3,7 @@ include ../config.mk
 
 objs=herd.o
 src=$(patsubst %.o,%.cc,$(objs))
-execs=simulate
+execs=simulate simulate_shepherd_agent_model
 
 all: $(execs)
 
@@ -28,5 +28,7 @@ clean:
 simulate: simulate.cc herd.o
 	$(cxx) $(cflags) $(iflags) -o $@ $^ 
 
+simulate_shepherd_agent_model: simulate_shepherd_agent_model.cc herd.o
+	$(cxx) $(cflags) $(iflags) -o $@ $^
 
 .PHONY: clean all executables depend

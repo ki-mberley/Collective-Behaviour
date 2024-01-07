@@ -164,7 +164,7 @@ void herding::first_round() {
             yd2 = yd + v_dog_tmp * sin(dog_sample_angle) * dt;
 
             // hardcoded maximum distance between dog and sheep
-            if (sqrt((xd2 - pos_avg[0]) * (xd2 - pos_avg[0]) + (yd2 - pos_avg[1]) * (yd2 - pos_avg[1])) < 5 * dog_dist_factor * ld) { // Begin dog_dist_factor if
+            if (sqrt((xd2 - pos_avg[0]) * (xd2 - pos_avg[0]) + (yd2 - pos_avg[1]) * (yd2 - pos_avg[1])) < 5 * dog_dist_factor * ld) {
                 // loop over agents for dog movement
                 test_propogate_sheep();
 
@@ -209,6 +209,97 @@ void herding::first_round() {
             }
         }
     }
+}
+
+// simplified shepherd agent model based on "Simulating Single and Multiple Sheepdogs Guidance of a Sheep Swarm"
+void herding::shepherd_agent_movement() {
+    read_params_shepherd_ABM();
+    for (int id = 0; id < num_dogs; id++) {
+        avg_loc(x, y);
+
+        double x_dog = xdogs[id];
+        double y_dog = ydogs[id];
+
+        double x_shepherding_behaviour = 0;
+        double y_shepherding_behaviour = 0;
+
+        int separated_sheep = -1;
+        for (int i = 0; i < num_agents; i++) {
+            // sheep i is too far away from the herd CM
+            if (sqrt((x[i] - pos_avg[0]) * (x[i] - pos_avg[0]) + (y[i] - pos_avg[1]) * (y[i] - pos_avg[1])) > 3 * sheep_influence_radius * cbrt(num_agents * num_agents)) {
+                separated_sheep = i;
+                break;
+            }
+        }
+        if (separated_sheep == -1) { // all sheep are close to the herd CM -> move to driving position
+            double driving_pos_dir[2] = {pos_avg[0] - x_target, pos_avg[1] - y_target};
+            double driving_pos_dir_len = sqrt(driving_pos_dir[0] * driving_pos_dir[0] + driving_pos_dir[1] * driving_pos_dir[1]);
+            double x_driving_pos = pos_avg[0] + (driving_pos_dir[0] / driving_pos_dir_len) * shepherding_influence_radius;
+            double y_driving_pos = pos_avg[1] + (driving_pos_dir[1] / driving_pos_dir_len) * shepherding_influence_radius;
+
+            x_shepherding_behaviour = (x_driving_pos - x_dog) * driving_force_weight;
+            y_shepherding_behaviour = (y_driving_pos - y_dog) * driving_force_weight;
+        } else { // at least one sheep is too far away from the herd CM -> move to collecting position
+            double collecting_pos_dir[2] = {x[separated_sheep] - pos_avg[0], y[separated_sheep] - pos_avg[1]};
+            double collecting_pos_dir_len = sqrt(collecting_pos_dir[0] * collecting_pos_dir[0] + collecting_pos_dir[1] * collecting_pos_dir[1]);
+            double x_collecting_pos = x[separated_sheep] + (collecting_pos_dir[0] / collecting_pos_dir_len) * shepherding_influence_radius;
+            double y_collecting_pos = y[separated_sheep] + (collecting_pos_dir[1] / collecting_pos_dir_len) * shepherding_influence_radius;
+ 
+            x_shepherding_behaviour = (x_collecting_pos - x_dog) * collecting_force_weight;
+            y_shepherding_behaviour = (y_collecting_pos - y_dog) * collecting_force_weight;
+        }
+       
+        double x_shepherd_repulsion_force = 0;
+        double y_shepherd_repulsion_force = 0;
+        double x_lcm = 0;
+        double y_lcm = 0;
+        int n_lcm = 0;
+        for (int k = 0; k< num_dogs; k++) {
+            double dist_id_k = sqrt((x_dog - xdogs[k]) * (x_dog - xdogs[k]) + (y_dog - ydogs[k]) * (y_dog - ydogs[k]));
+            if (k != id && dist_id_k <= shepherd_influence_radius) {
+                if (dist_id_k == 0) {
+                    x_shepherd_repulsion_force += rand_float();
+                    y_shepherd_repulsion_force += rand_float();
+                } else {
+                    x_shepherd_repulsion_force += (x_dog - xdogs[k]) / dist_id_k;
+                    y_shepherd_repulsion_force += (y_dog - ydogs[k]) / dist_id_k;
+                }
+            }
+            if (dist_id_k <= 3 * shepherd_influence_radius) {
+                x_lcm += xdogs[k];
+                y_lcm += ydogs[k];
+                n_lcm += 1;
+            }
+        }
+        double x_shepherd_repulsion = x_shepherd_repulsion_force * shepherd_repulsion_weight;
+        double y_shepherd_repulsion = y_shepherd_repulsion_force * shepherd_repulsion_weight;
+        if (n_lcm > 0) {
+            x_lcm /= n_lcm;
+            y_lcm /= n_lcm;
+        }
+
+        double x_shepherd_attraction = (x_lcm - x_dog) * shepherd_attraction_weight;
+        double y_shepherd_attraction = (y_lcm - y_dog) * shepherd_attraction_weight; 
+        
+        xdogsf[id] = x_dog + v_dog * (x_shepherding_behaviour + x_shepherd_repulsion + x_shepherd_attraction) * dt;
+        ydogsf[id] = y_dog + v_dog * (y_shepherding_behaviour + y_shepherd_repulsion + y_shepherd_attraction) * dt;
+    
+        // fence repulsion
+        if (fence == 1) {
+            if (xdogsf[id] > fmax_x) {
+                xdogsf[id] = fmax_x;
+            } else if (ydogsf[id] > fmax_y) {
+                ydogsf[id] = fmax_y;
+            } else if (xdogsf[id] < fmin_x) {
+                xdogsf[id] = fmin_x;
+            } else if(ydogsf[id] < fmin_y) {
+                ydogsf[id] = fmin_y;
+            }
+        }
+    } 
+
+    xcm_final = pos_avg[0];
+    ycm_final = pos_avg[1];
 }
     
 

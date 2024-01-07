@@ -1,0 +1,7 @@
+10 #sheep_influence_radius
+10 #shepherd_influence_radius 
+1 #shepherding_influence_radius
+10 #driving_force_weight
+10 #collecting_force_weight,
+5 #shepherd_repulsion_weight
+10 #shepherd_attraction_weight

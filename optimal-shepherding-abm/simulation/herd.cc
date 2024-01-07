@@ -182,3 +182,19 @@ void herding::avg_loc(double x_array[], double y_array[]) {
     pos_avg[0] = tmp_x / num_agents; // set pointer array to average x location
     pos_avg[1] = tmp_y / num_agents; // set pointer array to average y location
 }
+
+void herding::read_params_shepherd_ABM(){
+    double a;
+    string b;
+
+    ifstream myfile;
+    myfile.open("params_shepherd_abm.txt");
+
+    myfile >>a >> b; sheep_influence_radius = a;
+    myfile >>a >> b; shepherd_influence_radius = a;
+    myfile >>a >> b; shepherding_influence_radius = a;
+    myfile >>a >> b; driving_force_weight = a;
+    myfile >>a >> b; collecting_force_weight = a;
+    myfile >>a >> b; shepherd_repulsion_weight = a;
+    myfile >>a >> b; shepherd_attraction_weight = a;
+}
