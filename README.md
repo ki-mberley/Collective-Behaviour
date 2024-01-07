@@ -11,7 +11,7 @@ For the second report we extended the existing implementation with more than one
 ## Structure of this Repository
 
 - `optimal-shepherding-abm` contains our reduced and corrected version of the existing ABM implementation. More details can be found in the `README` of this subdirectory.
-- `references` contains the references that we have consulted for conducting our first report.
+- `presentation` contains the slides for our final presentation.
 - `reports` contains the source codes and the prebuilt PDFs of our first and second reports.
 
 ## Next Steps
