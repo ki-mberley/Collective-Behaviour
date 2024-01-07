@@ -1,6 +1,6 @@
 # Optimal Shepherding - Agent-Based Model
 
-This code is a reduced and corrected version of the [implementation of the ABM](https://github.com/arphysics/optimal-shepherding/tree/main/ABM_code) by Aditya Ranganathan which was written to explore the herding phenomenon via agent-based simulations. Results corresponding to this original implementation are described in the paper [Optimal shepherding and transport of a flock](https://www.semanticscholar.org/paper/Optimal-shepherding-and-transport-of-a-flock-Ranganathan-Heyde/f8f559f5ee1a5a9337130325dc3930d49a9b77c0) by Alexander Heyde, Aditya Ranganathan, Anupam Gupta, and Lakshminarayanan Mahadevan.
+This code is a reduced and corrected version of the [implementation of the ABM](https://github.com/arphysics/optimal-shepherding/tree/main/ABM_code) by Aditya Ranganathan which was written to explore the herding phenomenon via agent-based simulations. Results corresponding to this original implementation are described in the paper [*Optimal shepherding and transport of a flock*](https://www.semanticscholar.org/paper/Optimal-shepherding-and-transport-of-a-flock-Ranganathan-Heyde/f8f559f5ee1a5a9337130325dc3930d49a9b77c0) by Alexander Heyde, Aditya Ranganathan, Anupam Gupta, and Lakshminarayanan Mahadevan.
 
 ## Running the Code
 
