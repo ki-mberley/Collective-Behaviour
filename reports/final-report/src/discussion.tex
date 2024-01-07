@@ -1,0 +1,12 @@
+\subsection{Introduction of a fence}
+Our hypothesis was that the fence could be used by the shepherd to control the flock and keep the sheep close together more easily. However, our experiments did show such behaviour only for very specific parameter choices. The impact of the fence on the herding strategies of the shepherd remains to be investigated in more detail in future work.
+
+\subsection{Introduction of multiple shepherds}
+The effect of the introduction of one or multiple additional shepherds differed strongly for the three shepherding scenarios. In the case of driving the dogs did not collaborate and only one of the dogs worked on leading the herd towards the target. Depending on the value of \texttt{shepherd\_distance\_} \texttt{penalty}, the remaining dogs either ran around and disturbed the herd or stayed outside of the herd and did not influence it much. In the droving scenario, on the other hand, the dogs worked together and the introduction of additional dogs sped up the herding process. Lastly, in the case of mustering, two dogs were able to guide the herd more efficiently than a single dog. The introduction of a third shepherd, however, led to the disappearance of this cooperation and to an increase in the duration of the shepherding process.
+
+Our results might indicate that the usefulness of having more than one shepherd depends on the behaviour of the agents in the flock. Of course, additional experiments are necessary to confirm this hypothesis.
+
+\subsection{Comparison to the agent-based shepherding model}
+The agent-based shepherding model completed the herding more quickly in the case of driving with one or two dogs and in the case of mustering with three dogs. In all other cases, our objective-function-based model solved the task with fewer timesteps.
+
+This indicates that our approach works well but also that the optimal shepherding algorithm depends on the behaviour of the herd. Again, additional experiments are necessary to confirm this hypothesis, especially because we have not yet exhaustively studied the parameter space of the agent-based shepherding model.

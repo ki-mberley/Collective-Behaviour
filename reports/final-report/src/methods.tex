@@ -1,0 +1,59 @@
+\subsection{Description of the original model}
+
+The herd consists of $N$ agents which move in a two-dimensional open field. The behaviour of the agents is based on Reynolds' boids model \cite{boids}. To be more precise, the movement of each agent depends on three agent-agent interactions, namely local alignment, repulsion, and weak attraction to the herd center, and on the repulsion from the shepherd.
+
+This leads to the following velocity field of an agent in the herd, where $\alpha, \beta, \gamma$, and $\delta$ are weights:
+
+\begin{equation}
+\label{eq:agent_velocity}
+\boldsymbol{v}^{\text{net}} = \alpha \boldsymbol{v}^{\text{alignment}}_{a-a} + \beta \boldsymbol{v}^{\text{repulsion}}_{a-a} + \gamma \boldsymbol{v}^{\text{attraction}}_{a-a} + \delta \boldsymbol{v}^{\text{repulsion}}_{a-s} 
+\end{equation}
+
+Local alignment means that agents that are close to each other align their velocity vectors. We use the formulation from the Vicsek model \cite{alignment}: At each timestep, the orientation of agent $i$ is updated to be the sum of the average $\langle \theta \rangle$ of the orientations of the other agents within a certain interaction radius $r^\text{alignment}$ and a uniformly distributed noise $\eta \in [-\eta_0 / 2, \eta_0 / 2]$, i.e., $\theta^\text{alignment}(i) = \langle \theta \rangle_{r < r^\text{alignment}} + \eta$. $r^\text{alignment}$ is set to approximately ten times the agent size $l_a$. The local alignment term of agent $i$ arises as the orientation of this agent multiplied by the agent speed $v_a$:
+
+$$\boldsymbol{v}^{\text{alignment}}_{a-a}(i) = v_a 
+ \left(\cos \theta^\text{alignment}(i), \sin\theta^\text{alignment}(i)\right)$$
+
+The repulsion between the agents is modeled as
+$$\boldsymbol{v}^{\text{repulsion}}_{a-a}(i) = \sum_{i \neq j} \exp\left( -\frac{\Vert\boldsymbol{r_{ji}}\Vert}{l_a}\right)\frac{\boldsymbol{r_{ji}}}{\Vert\boldsymbol{r_{ji}}\Vert}$$
+with $\boldsymbol{r_{ji}} = \boldsymbol{r_i} - \boldsymbol{r_j}$ where $r_k$ denotes the position of agent $k$.
+
+The attraction to the herd center quantifies the idea that agents intend to move to the middle of the herd to avoid being captured by predators. In our model, the attraction term is independent of an agent's distance to the herd center but only depends on the agents' speed and the polar angle $\phi(i) = \tan^{-1}\left(\frac{y_\text{cm} - y_i}{x_\text{cm} - x_i}\right)$ between the agent's position $(x_i, y_i)$ and the herd's center of mass $\boldsymbol{r_\text{cm}} = (x_\text{cm}, y_\text{cm})$:
+$$\boldsymbol{v}^\text{attraction}_{a-a}(i) = v_a \left(\cos \phi(i), \sin \phi(i)\right)$$
+
+Lastly, the repulsion of an agent from the shepherd is modeled similarly to the repulsion between two agents:
+
+$$\boldsymbol{v}^\text{repulsion}_{a-s}(i) = \exp\left(\frac{-\Vert\boldsymbol{r_{si}}\Vert}{l_s}\right)\frac{\boldsymbol{r_{si}}}{\Vert\boldsymbol{r_{si}}\Vert}$$
+with $\boldsymbol{r_{si}}=\boldsymbol{r_i} - \boldsymbol{r_s}$ where $\boldsymbol{r}_s$ is the position of the shepherd and $\boldsymbol{r}_i$ is the position of agent $i$. Based on observations of real-world shepherds, $l_s$ was chosen as approximately 30 times $l_a$.
+
+The behaviour of the shepherd is not predefined but arises from its goal to transport the entire herd to a certain target position. This goal leads to three conditions, namely $(A)$ the shepherd should move the herd's center of mass to the target, $(B)$ the shepherd may not lose any agents in the process, and $(C)$ the shepherd should keep target and herd in alignment to maintain the line of sight.
+
+These three transport requirements are weighted with $W_\text{mean}, W_\text{std}$ and $W_\text{col}$ respectively and linearly combined into an objective function for the shepherd:
+\begin{equation}
+\label{eq:objective_function}
+    C(\boldsymbol{r_s}) = W_\text{mean}|\boldsymbol{\Delta r}| + W_\text{std} \sigma_{r_\text{cm}} + W_\text{col} |\boldsymbol{\Delta R}_\text{col}|
+\end{equation}
+
+The importance of transporting the herd to the target is represented by $|\boldsymbol{\Delta r}| = |\boldsymbol{r}_\text{target} - r_\text{cm}|$, where $\boldsymbol{r}_\text{target}$ is the position of the target. $\sigma_{r_\text{cm}} = \left(\frac{\sum_i(r_i - r_\text{cm})^4}{N}\right)^{1/4}$ models the objective of keeping the herd cohesive and not losing any agents. The advantage gained from keeping the flock within the line of sight of the shepherd is represented by $\boldsymbol{\Delta R_\text{col}} = \boldsymbol{r_s} + l_s \frac{\boldsymbol{r_\text{cm - target}}}{\Vert \boldsymbol{r_\text{cm - target}} \Vert}$ where $\boldsymbol{r_\text{cm - target}} = \boldsymbol{r_\text{target}} - \boldsymbol{r_\text{cm}}$.
+
+The actual simulation is based on a forward Euler scheme implemented in C++. At each timestep, the positions of all agents are updated based on formula \ref{eq:agent_velocity}. For the shepherd, several directions are randomly sampled from the uniform distribution on $[0, 2\pi)$ and the direction corresponding to the minimal value of the objective function is chosen. 
+
+\subsection{Implementation of the surrounding fence}
+The original implementation provided by the paper's authors included a code base featuring a fence implementation, specifically a function for calculating the repulsion force exerted by a fence on a sheep. However, due to the lack of explanation in the paper regarding the interpretation of the fence and the difficulty of understanding the author's implementation solely through code inspection, we decided not to use their code. Instead, we opted for a basic fence implementation, leaving room for potential future extensions such as incorporating an actual repulsion force from the fence.
+
+We introduced minimum and maximum $x$- and $y$-coordinates, defining the boundaries of the surrounding fence. When calculating the next step for a sheep or dog, if the computed value exceeds the established fence bounds, we adjust the next step's value to the corresponding minimum or maximum $x$- or $y$-coordinate, preventing the sheep or dog from crossing the fence. This modification was integrated into the parameters file (\texttt{params.txt}) to accommodate fence specifications as input. Additionally, we included a condition in the \texttt{timestepping.hh} file to update the next step in the presence of a fence. As a final step, we ensure that a fence is shown in the plot by incorporating the necessary code in \texttt{trajectory\_plotter.py} and \texttt{visualizer.py}.
+
+\subsection{Implementation of multiple shepherds}
+We began our study by exploring existing literature that showcased the use of multiple dogs for shepherding \cite{kubo2022herd}, \cite{baxter2021simulating}. Through this research, we found that in order to adapt the model for multiple shepherds, we needed to make two modifications. Firstly, we aimed to include a mechanism that discourages shepherds from getting too close to each other. Secondly, we wanted to adjust the way sheep and shepherds repel each other, ensuring it considered the sum of the repulsions between sheep and each individual shepherd. Although the latter was already part of the original paper's implementation, it was not functioning correctly, and we corrected the code to ensure its proper operation.
+
+To prevent the shepherds from coming too close to each other, we added an additional term to the cost function which models the proximity of one shepherd to the other ones. We defined the proximity as the inverse of the distance, so two shepherds that are very close to one another are penalized more heavily. The proximity penalty for one shepherd is the sum of the proximities of all other shepherds. We introduced a parameter named \texttt{shepherd\_distance\_penalty} which is used to balance the proximity penalty with the other terms in the cost function.
+
+With these adjustments in place, we successfully implemented a basic version of the model with multiple shepherds.
+
+\subsection{Implementation of an agent-based shepherding model as a basis for comparison}
+
+To test whether our implementation and especially our extensions of the model were working well, we wanted to compare its performance to the one of an algorithm from the literature. During our research on existing multiple-shepherd algorithms, we determined the agent-based model from the paper \textit{Simulating Single and Multiple Sheepdogs Guidance of a Sheep Swarm} \cite{baxter2021simulating} to be the most suitable for our purposes.
+
+In this paper, the shepherds are modeled as agents that act based on the goals of keeping the herd cohesive and guiding it towards the target. Additionally, each shepherd is at the same time attracted to the center of mass of the other shepherds and repelled from other shepherds if they are coming too close.
+
+Because the paper did not provide an implementation, we recreated a basic version of the algorithm ourselves. As the sheep model in \cite{baxter2021simulating} is very similar to the sheep model from our chosen paper \cite{ranganathan2022optimal}, we reused our existing sheep model and only adapted the model of the shepherd.

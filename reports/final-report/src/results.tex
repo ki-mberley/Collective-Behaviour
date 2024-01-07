@@ -1,0 +1,23 @@
+\subsection{Results from the original paper}
+
+The original paper \cite{ranganathan2022optimal} identified three different emerging herding strategies, namely \textit{driving}, \textit{droving}, and \textit{mustering}. Mustering involves the shepherd circling the flock to keep it together while droving entails the shepherd chasing the flock in the intended direction. Driving, on the other hand, involves the shepherd positioning themselves within the flock and guiding it from the inside. The paper comes to the conclusion that the optimal herding strategy depends on just two parameters: the ratio of the herd size to the shepherd repulsion length and the ratio of herd speed to shepherd speed. We managed to recreate these three types of shepherding behaviours in our experiments. The exact parameter values that we used to make each of the three strategies emerge can be found in our GitHub repository.
+
+\subsection{Introduction of a surrounding fence}
+The introduction of a surrounding fence ensures that both the dogs and sheep are surrounded by a boundary and prevents them from crossing it. In Figures \ref{fig:one-shepherd-no-fence} and \ref{fig:one-shepherd-fence}, the outcomes are depicted for the herding style driving without and with a fence. As intended, the presence of the fence confines the sheep and dog within its boundaries, while the dog still leads the sheep to the target.
+
+
+\subsection{Introduction of multiple shepherds}
+
+We analyzed the impact of the number of shepherds and of the parameter \texttt{shepherd\_distance\_penalty} on the duration of the herding process. For this analysis, we removed the randomness from our model by setting a fixed random seed. 
+
+In the case of driving, a single dog needed 35240 timesteps to successfully complete the herding process. The fastest result that we were able to achieve in the two-dog scenario was 38102 timesteps for \texttt{shepherd\_distance\_penalty} = 1. This parameter value leads to one dog mainly staying at the center of the herd and the other one mainly staying outside of the herd without influencing it much. With three dogs the number of timesteps reduced to 27260 for \texttt{shepherd\_distance\_penalty} = 1. Again, one dog mostly stayed at the center of the herd while the other two dogs stayed outside of it.
+
+In the case of droving, a single dog needed 1568 timesteps for a successful completion of the herding process. Introducing a second dog with \texttt{shepherd\_distance\_penalty} = 0.01 reduced the duration to 854 timesteps. The two dogs collaborate and drove the herd together towards the target. The droving behaviours for one and two dogs are depicted in Figures \ref{fig:single-shepherd}  and \ref{fig:two-shepherd}. With three dogs the number of timesteps reduced even further to 491 for \texttt{shepherd\_distance\_penalty} = 0.001. Again, the three dogs cooperated and drove the herd together.
+
+In the case of mustering, a single dog needed 9002 timesteps to lead the herd to the target. In the two-dog scenario with  \texttt{shepherd\_distance\_penalty} = 0.01, the duration reduced to 2178 timesteps. The two dogs cooperated and used a mix of droving and mustering. The introduction of a third dog, on the other hand, led to a significant increase of the duration to 41962 timesteps for \texttt{shepherd\_distance\_penalty} = 0.001. The three dogs do not really cooperate but all stay at the center of the herd and drive it towards the target.
+
+\subsection{Comparison to the agent-based shepherding model}
+
+For the agent-based shepherding model, we again studied the driving, the droving, and the mustering scenario with one, two, and three dogs. In all cases, the herding task was successfully completed. Interestingly, the duration of the herding did not seem to depend as much on the shepherding behaviour as it was the case for our objective-function-based model.
+
+In the case of driving, the agent-based model needed 28123 timesteps with one, 24322 with two, and 28186 with three dogs. In the case of droving, it took 27749 timesteps with one, 34581 with two, and 33421 timesteps with three dogs. Lastly, in the case of mustering, 24986 timesteps were required with one, 25929 timesteps with two, and 28861 timesteps with three dogs.
