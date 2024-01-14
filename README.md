@@ -27,7 +27,7 @@ What remains to be done is to analyze our extensions in even more detail to find
 ## Structure of this Repository
 
 - `optimal-shepherding-abm` contains our reduced, corrected, and extended version of the existing ABM implementation. More details can be found in the `README` of this subdirectory.
-- `presentation` contains the slides for our final presentation.
+- `presentation and video` contains the slides and the video for our final presentation.
 - `reports` contains the source codes and the prebuilt PDFs of our three reports.
 
 ## Group Members
